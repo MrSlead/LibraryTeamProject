@@ -1,5 +1,7 @@
 package com.dream.team.library.entity;
 
-public interface AbstractEntity {
+import java.io.Serializable;
+
+public interface AbstractEntity extends Serializable {
     Long getId();
 }
