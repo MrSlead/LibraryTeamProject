@@ -4,7 +4,6 @@ import com.dream.team.library.entity.AbstractEntity;
 import com.dream.team.library.entity.lib.lnk.LnkBookAuthor;
 import com.dream.team.library.entity.lib.lnk.LnkBookGenre;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +31,6 @@ public class Book implements AbstractEntity {
     private Date dateOfPublication;
 
     @ManyToOne
-    @JsonManagedReference
     private Language language;
 
     private int numberOfPages;

@@ -1,6 +1,7 @@
 package com.dream.team.library.entity.authorization;
 
 import com.dream.team.library.entity.AbstractEntity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,9 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class User implements AbstractEntity {
+public class Client implements AbstractEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
