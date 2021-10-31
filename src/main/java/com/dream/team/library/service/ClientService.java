@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -17,7 +18,7 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public Client findByLogin(String login) {
+    public Optional<Client> findByLogin(String login) {
         return clientRepository.findByLogin(login);
     }
 
