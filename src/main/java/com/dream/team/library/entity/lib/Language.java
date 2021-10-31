@@ -25,10 +25,4 @@ public class Language implements AbstractEntity {
     private Long id;
 
     private String name;
-
-
-    @OneToMany(mappedBy = "language")
-    @JsonIgnore
-    @JsonBackReference
-    private Set<Book> books;
 }
