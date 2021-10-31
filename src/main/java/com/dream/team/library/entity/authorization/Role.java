@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
-@Entity
+/*@Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,4 +21,8 @@ public class Role implements AbstractEntity {
     private Long id;
 
     private String name;
+}*/
+
+public enum Role {
+    ORDINARY, PREMIUM
 }

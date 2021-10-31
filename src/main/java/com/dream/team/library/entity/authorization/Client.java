@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -23,7 +24,13 @@ public class Client implements AbstractEntity {
     private String name;
     private String surname;
     private String patronymic;
+    private String login;
+    private String password;
 
-    @ManyToOne
+    @Basic
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 }
