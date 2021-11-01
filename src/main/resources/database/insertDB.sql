@@ -1,0 +1,2 @@
+INSERT INTO client VALUES (1, '2020-02-11', 'varvar', 'Danil', 'password', 'Danilovich', 'ORDINARY', 'Yudin');
+INSERT INTO client VALUES (2, '2010-03-04', 'koleka', 'Max', 'password', 'Maxxc', 'ORDINARY', 'Doreo');
