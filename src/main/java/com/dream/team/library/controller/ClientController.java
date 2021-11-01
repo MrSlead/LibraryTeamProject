@@ -26,7 +26,7 @@ public class ClientController {
 
         Optional<Client> client = clientService.findById(idClient);
 
-        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public class ClientController {
 
         Optional<Client> client = clientService.findByLogin(login);
 
-        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
@@ -67,12 +67,12 @@ public class ClientController {
     public ResponseEntity<Optional<Client>> addClient(@RequestBody Client client) {
         Optional<Client> clientOptional = Optional.of(client);
         if(clientOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         clientOptional.get().setRole(Role.ORDINARY);
         clientService.save(clientOptional.get());
 
-        return new ResponseEntity<>(clientOptional, HttpStatus.OK);
+        return new ResponseEntity<>(clientOptional, HttpStatus.CREATED);
     }
 }
