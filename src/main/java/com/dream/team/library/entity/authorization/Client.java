@@ -1,14 +1,14 @@
 package com.dream.team.library.entity.authorization;
 
 import com.dream.team.library.entity.AbstractEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +24,9 @@ public class Client implements AbstractEntity {
     private String name;
     private String surname;
     private String patronymic;
+    @JsonIgnore
     private String login;
+    @JsonIgnore
     private String password;
 
     @Basic
