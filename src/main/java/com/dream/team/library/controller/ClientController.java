@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+// Разрешение на получение данных только из указанного источника
+@CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("api/v1/client/")
 public class ClientController {
     private ClientService clientService;
