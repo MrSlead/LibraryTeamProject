@@ -8,7 +8,7 @@ import com.dream.team.library.payload.response.JwtResponse;
 import com.dream.team.library.payload.response.MessageResponse;
 import com.dream.team.library.security.jwt.JwtUtils;
 import com.dream.team.library.security.userdetails.UserDetailsImpl;
-import com.dream.team.library.service.ClientService;
+import com.dream.team.library.service.interf.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
