@@ -1,7 +1,7 @@
 package com.dream.team.library.security.userdetails;
 
 import com.dream.team.library.entity.authorization.Client;
-import com.dream.team.library.service.ClientService;
+import com.dream.team.library.service.interf.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

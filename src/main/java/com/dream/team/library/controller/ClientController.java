@@ -2,7 +2,7 @@ package com.dream.team.library.controller;
 
 import com.dream.team.library.entity.authorization.Client;
 import com.dream.team.library.entity.authorization.Role;
-import com.dream.team.library.service.ClientService;
+import com.dream.team.library.service.interf.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

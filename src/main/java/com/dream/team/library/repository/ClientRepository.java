@@ -9,9 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends EntityRepository<Client> {
-    Optional<Client> findById(Long id);
     Optional<Client> findByEmail(String email);
     Optional<Client> findByLogin(String login);
     List<Client> findAllByRole(Role role);
-    List<Client> findAll();
 }
