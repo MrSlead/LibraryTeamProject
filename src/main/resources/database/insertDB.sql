@@ -1,2 +1,3 @@
-INSERT INTO client VALUES (1231, '2020-02-11', 'varvar', 'dorofeev@mail.ru' ,'Danil', 'password', 'Danilovich', 'ORDINARY', 'Yudin');
---INSERT INTO client VALUES (2, '2010-03-04', 'koleka', 'Max', 'password', 'Maxxc', 'ORDINARY', 'Doreo');
+-- При удалении или изменении нужно в initDB.sql отредактировать sequence для client
+INSERT INTO client VALUES (1, 'varvar', 'dorofeev@mail.ru', 'password', 'ORDINARY');
+INSERT INTO client VALUES (2, 'mrkres', 'dorofeevihehehe@mail.ru', 'passwocxzzx', 'ORDINARY');
