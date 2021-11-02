@@ -41,12 +41,13 @@ drop sequence if exists genre_seq;
 
 drop sequence if exists language_seq;
 
-drop sequence if exists user_seq;
+drop sequence if exists client_seq;
+
 create sequence author_seq start 1 increment 1;
 create sequence book_seq start 1 increment 1;
 create sequence genre_seq start 1 increment 1;
 create sequence language_seq start 1 increment 1;
-create sequence user_seq start 1 increment 1;
+create sequence client_seq start 3 increment 1;
 
 
 create table author (
@@ -66,14 +67,10 @@ create table book (
 );
 create table client (
                         id int8 not null,
-                        birthday date,
                         login varchar(255),
                         email varchar(255),
-                        name varchar(255),
                         password varchar(255),
-                        patronymic varchar(255),
                         role varchar(255),
-                        surname varchar(255),
                         primary key (id)
 );
 create table genre (

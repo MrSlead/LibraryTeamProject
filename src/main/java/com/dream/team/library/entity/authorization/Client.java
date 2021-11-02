@@ -24,22 +24,14 @@ public class Client implements AbstractEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_generator")
+    @SequenceGenerator(name = "client_generator", sequenceName = "client_seq", allocationSize = 1)
     private Long id;
-
-    private String name;
-    private String surname;
-    private String patronymic;
-    @JsonIgnore
     private String login;
     private String email;
+
     @JsonIgnore
     private String password;
-
-    @Basic
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
 
     @Enumerated(EnumType.STRING)
     private Role role;
