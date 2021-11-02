@@ -2,50 +2,24 @@ package com.dream.team.library.service;
 
 import com.dream.team.library.entity.authorization.Client;
 import com.dream.team.library.entity.authorization.Role;
-import com.dream.team.library.repository.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class ClientService {
-    private ClientRepository clientRepository;
+public interface ClientService {
+    List<Client> findAll();
 
-    @Autowired
-    public void setClientRepository(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
+    List<Client> findAllByRole(Role role);
 
-    public Optional<Client> findById(Long id) {
-        return clientRepository.findById(id);
-    }
+    Optional<Client> findById(Long id);
 
-    public Optional<Client> findByEmail(String email) {
-        return clientRepository.findByEmail(email);
-    }
+    Optional<Client> findByEmail(String email);
 
-    public Optional<Client> findByLogin(String login) {
-        return clientRepository.findByLogin(login);
-    }
+    Optional<Client> findByLogin(String login);
 
-    public List<Client> findAllByRole(Role role) {
-        return clientRepository.findAllByRole(role);
-    }
+    Optional<Client> save(Client client);
 
-    public List<Client> findAll() {
-        return clientRepository.findAll();
-    }
+    void delete(Client client);
 
-    public Optional<Client> save(Client client) {
-        return Optional.of(clientRepository.save(client));
-    }
+    void deleteById(Long id);
 
-    public void deleteById(Long id) {
-        clientRepository.deleteById(id);
-    }
-
-    public void delete(Client client) {
-        clientRepository.delete(client);
-    }
 }
