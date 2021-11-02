@@ -18,18 +18,18 @@ const login = (login, password) => {
     })
     .then((response) => {
       if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("login", JSON.stringify(response.data));
       }
       return response.data;
     });
 };
 
 const logout = (login, password) => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("login");
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("login"));
 };
 
 export default {
