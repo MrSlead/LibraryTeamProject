@@ -68,6 +68,7 @@ create table client (
                         id int8 not null,
                         birthday date,
                         login varchar(255),
+                        email varchar(255),
                         name varchar(255),
                         password varchar(255),
                         patronymic varchar(255),

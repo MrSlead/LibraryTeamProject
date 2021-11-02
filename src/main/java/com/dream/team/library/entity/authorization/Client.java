@@ -16,6 +16,12 @@ import java.util.Date;
 public class Client implements AbstractEntity {
     private static final long serialVersionUID = 1L;
 
+    public Client(String login, String email, String password) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
@@ -26,6 +32,7 @@ public class Client implements AbstractEntity {
     private String patronymic;
     @JsonIgnore
     private String login;
+    private String email;
     @JsonIgnore
     private String password;
 
