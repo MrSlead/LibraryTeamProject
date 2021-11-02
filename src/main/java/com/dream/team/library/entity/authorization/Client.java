@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Client implements AbstractEntity {
     private static final long serialVersionUID = 1L;
 
