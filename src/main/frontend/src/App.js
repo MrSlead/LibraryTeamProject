@@ -80,7 +80,7 @@ const App = () => {
           {currentUser && (
             <li className="nav-item">
               <Link to={"/user"} className="nav-link">
-                User
+                {/* User */}
               </Link>
             </li>
           )}
@@ -88,12 +88,16 @@ const App = () => {
         {currentUser ? (
           <div className="ml-auto">
             <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
+              <Link to={"/profile"} className="nav-link text-white">
                 {currentUser.username}
               </Link>
             </li>
             <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
+              <a
+                href="/login"
+                className=" nav-link text-white"
+                onClick={logOut}
+              >
                 LogOut
               </a>
             </li>

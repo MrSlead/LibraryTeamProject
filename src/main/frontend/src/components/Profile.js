@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import authHeader from "../services/authHead";
+import UserService from "../services/userService";
+import axios from "axios";
 import AuthService from "../services/authservice";
 
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
 
+  const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/v1/client/all", { headers: authHeader() })
+      .then((res) => {
+        console.log(res.data);
+        setUserList(res.data);
+      });
+  }, []);
   return (
     <div className="container">
       <header className="jumbotron">
