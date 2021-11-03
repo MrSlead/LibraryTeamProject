@@ -2,10 +2,10 @@ import axios from "axios";
 
 import authHeader from "./authHead";
 
-const API_URL = "http://localhost:8080/api/v1/test/";
+const API_URL = "http://localhost:8080/api/v1/client/";
 
 const getPublicContent = () => {
-  return axios.get(API_URL + "all");
+  return axios.get(API_URL + "all", { headers: authHeader() });
 };
 
 const getUserBoard = () => {

@@ -31,3 +31,12 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
