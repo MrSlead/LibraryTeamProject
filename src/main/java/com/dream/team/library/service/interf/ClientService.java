@@ -9,4 +9,5 @@ public interface ClientService extends AbstractService<Client, Long> {
     List<Client> findAllByRole(Role role);
     Optional<Client> findByEmail(String email);
     Optional<Client> findByLogin(String login);
+    Optional<Client> findByLoginForJWT(String login);
 }

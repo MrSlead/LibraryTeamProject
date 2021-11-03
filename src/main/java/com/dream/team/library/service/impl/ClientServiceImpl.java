@@ -4,11 +4,13 @@ import com.dream.team.library.entity.authorization.Client;
 import com.dream.team.library.entity.authorization.Role;
 import com.dream.team.library.repository.ClientRepository;
 import com.dream.team.library.service.interf.ClientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
@@ -20,40 +22,101 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Optional<Client> findById(Long id) {
-        return clientRepository.findById(id);
+        Optional<Client> client = clientRepository.findById(id);
+
+        if(client.isPresent()) {
+            log.info("Returned the Client by id: " + id);
+            log.debug("Client: " + client.get());
+        }
+        else {
+            log.info("Couldn't find the Client by id: " + id);
+        }
+
+        return client;
     }
 
     @Override
     public Optional<Client> findByEmail(String email) {
-        return clientRepository.findByEmail(email);
+        Optional<Client> client = clientRepository.findByEmail(email);
+
+        if(client.isPresent()) {
+            log.info("Returned the Client by email: " + email);
+            log.debug("Client: " + client.get());
+        }
+        else {
+            log.info("Couldn't find the Client by id: " + email);
+        }
+
+        return client;
     }
 
     @Override
     public Optional<Client> findByLogin(String login) {
+        Optional<Client> client = clientRepository.findByLogin(login);
+
+        if(client.isPresent()) {
+            log.info("Returned the Client by login: " + login);
+            log.debug("Client: " + client.get());
+        }
+        else {
+            log.info("Couldn't find the Client by id: " + login);
+        }
+
+        return client;
+    }
+
+    @Override
+    public Optional<Client> findByLoginForJWT(String login) {
         return clientRepository.findByLogin(login);
     }
 
     @Override
     public List<Client> findAllByRole(Role role) {
-        return clientRepository.findAllByRole(role);
+        List<Client> clientList = clientRepository.findAllByRole(role);
+
+        log.info("Returned the Clients by role: " + role.name());
+        log.debug("Size of clients: " + clientList.size());
+
+        return clientList;
     }
 
     @Override
     public List<Client> findAll() {
-        return clientRepository.findAll();
+        List<Client> clientList = clientRepository.findAll();
+
+        log.info("Returned all Clients");
+        log.debug("Size of clients: " + clientList.size());
+
+        return clientList;
     }
     @Override
     public Optional<Client> save(Client client) {
+        log.info("Saved the client");
+        log.debug("Client: " + client);
+
         return Optional.of(clientRepository.save(client));
     }
 
     @Override
     public void deleteById(Long id) {
+        Optional<Client> client = clientRepository.findById(id);
+
+        if(client.isPresent()) {
+            log.info("Deleted the Client by id: " + id);
+            log.debug("Client: " + client.get());
+        }
+        else {
+            log.info("Couldn't find the Client by id: " + id);
+        }
+
         clientRepository.deleteById(id);
     }
 
     @Override
     public void delete(Client client) {
+        log.info("Deleted the client");
+        log.debug("Client: " + client);
+
         clientRepository.delete(client);
     }
 }

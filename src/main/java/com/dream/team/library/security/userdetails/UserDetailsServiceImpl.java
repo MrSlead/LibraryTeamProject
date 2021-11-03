@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Client client = clientService.findByLogin(login)
+        Client client = clientService.findByLoginForJWT(login)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + login));
 
         return UserDetailsImpl.build(client);
