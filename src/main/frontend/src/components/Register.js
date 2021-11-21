@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import { isEmail } from "validator";
+import React, { useState, useRef } from 'react';
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
+import CheckButton from 'react-validation/build/button';
+import { isEmail } from 'validator';
 
-import AuthService from "../services/authservice";
+import AuthService from '../services/authservice';
 
 const required = (value) => {
   if (!value) {
@@ -50,11 +50,11 @@ const Register = (props) => {
   const form = useRef();
   const checkBtn = useRef();
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [successful, setSuccessful] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const onChangeUsername = (e) => {
@@ -75,7 +75,7 @@ const Register = (props) => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    setMessage("");
+    setMessage('');
     setSuccessful(false);
 
     form.current.validateAll();
@@ -83,20 +83,19 @@ const Register = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.register(username, email, password).then(
         (response) => {
+          props.history.push('/login');
           setMessage(response.data.message);
           setSuccessful(true);
         },
         (error) => {
           const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
+            (error.response && error.response.data && error.response.data.message) ||
             error.message ||
             error.toString();
 
           setMessage(resMessage);
           setSuccessful(false);
-        }
+        },
       );
     }
   };
@@ -149,10 +148,7 @@ const Register = (props) => {
               </div>
 
               <div className="form-group mt-4">
-                <button
-                  className="btn btn-primary btn-block"
-                  style={{ width: "100%" }}
-                >
+                <button className="btn btn-primary btn-block" style={{ width: '100%' }}>
                   Sign Up
                 </button>
               </div>
@@ -162,16 +158,13 @@ const Register = (props) => {
           {message && (
             <div className="form-group">
               <div
-                className={
-                  successful ? "alert alert-success" : "alert alert-danger"
-                }
-                role="alert"
-              >
+                className={successful ? 'alert alert-success' : 'alert alert-danger'}
+                role="alert">
                 {message}
               </div>
             </div>
           )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
+          <CheckButton style={{ display: 'none' }} ref={checkBtn} />
         </Form>
       </div>
     </div>
