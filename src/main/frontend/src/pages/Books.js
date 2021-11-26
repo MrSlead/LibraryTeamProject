@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthService from '../services/authservice';
+import Book from './Book';
 
 const Books = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -18,6 +20,16 @@ const Books = () => {
   const logOut = () => {
     AuthService.logout();
   };
+
+  const people = ['Siri', 'Alexa', 'Google', 'Facebook', 'Twitter', 'Linkedin', 'Sinkedin'];
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const results = !searchTerm
+    ? people
+    : people.filter((person) => person.toLowerCase().includes(searchTerm.toLocaleLowerCase()));
   return (
     <>
       <nav class="navbar navbar-light bg-dark">
@@ -28,6 +40,8 @@ const Books = () => {
               type="search"
               placeholder="Search"
               aria-label="Search"
+              value={searchTerm}
+              onChange={handleChange}
             />
             <button class="btn btn-dark" type="submit">
               Search
@@ -108,41 +122,7 @@ const Books = () => {
               </a>
             </div>
           </aside>
-          <article className="section__article">
-            <h3 className="section__article__title">Рекомендовано</h3>
-            <div className="card">
-              <img src="img/java.jpg" alt="card image" className="card__image" />
-              <div className="card__info">
-                <h4 className="card__info__title">Java For Absolute Beginners</h4>
-                <div className="card__info__main">
-                  <div className="card__info__left">
-                    <p className="card__info__item">Автор: Maxim Dorofeev</p>
-                    <p className="card__info__item">Жанр: Porno</p>
-                    <p className="card__info__item">Язык книги: Русский | страниц 0</p>
-                    <p className="card__info__item">Книга закончена || Книга не закончена</p>
-                    <div className="read-button">
-                      <a href="#" className="card__info__read">
-                        Читать
-                      </a>
-                    </div>
-                  </div>
-                  <div className="card__info__right">
-                    <p className="card__info__item">Формат:</p>
-                    <div className="card__info__radios">
-                      <input type="radio" name="format" value="epub" />
-                      <span className="radio-text">epub</span>
-                      <input type="radio" name="format" value="fb2" />
-                      <span className="radio-text">fb2</span>
-                    </div>
-                    <p className="card__info__item">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus
-                      illum neque quaerat inventore eum sed tempora delectus consequatur?
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
+          <Book results={results} />
         </div>
       </section>
       <footer className="footer">
