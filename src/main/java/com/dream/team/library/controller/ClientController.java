@@ -32,13 +32,18 @@ public class ClientController {
     }
 
     @GetMapping("${client.api.getById}")
-    public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long idClient) {
+    public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long clientId) {
         log.info("API was called: " + clientApiString.getClientApiGetById());
-        if(idClient == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        Optional<Client> client = clientService.findById(idClient);
+        if(clientId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Optional<Client> client = clientService.findById(clientId);
+
+        if(client.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
@@ -46,11 +51,16 @@ public class ClientController {
     @GetMapping("${client.api.getByLogin}")
     public ResponseEntity<Optional<Client>> getClientByLogin(@PathVariable String login) {
         log.info("API was called: " + clientApiString.getClientApiGetByLogin());
-        if(login == null || login.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        if(login == null || login.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         Optional<Client> client = clientService.findByLogin(login);
 
-        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(client.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
