@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-// Разрешение на получение данных только из указанного источника
+// Разрешение на получение данных только из указанного источника.
 @CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("${language.api.begin}")
 public class LanguageController {
@@ -69,7 +69,7 @@ public class LanguageController {
     }
 
     @DeleteMapping(value = "${language.api.deleteById}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteById(@RequestBody Long languageId) {
+    public void deleteById(@PathVariable Long languageId) {
         log.info("API was called: {}", languageApiString.getLanguageApiDeleteById());
 
         controller.deleteById(languageId);

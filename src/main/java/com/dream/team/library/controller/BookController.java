@@ -69,7 +69,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "${book.api.deleteById}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteById(@RequestBody Long bookId) {
+    public void deleteById(@PathVariable Long bookId) {
         log.info("API was called: {}", bookApiString.getBookApiDeleteById());
 
         controller.deleteById(bookId);
