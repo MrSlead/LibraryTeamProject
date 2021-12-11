@@ -18,6 +18,9 @@ public class LanguageApiString {
     @Value("${language.api.save}")
     private String languageApiSave;
 
+    @Value("${language.api.update}")
+    private String languageApiUpdate;
+
     @Value("${language.api.delete}")
     private String languageApiDelete;
 
@@ -39,6 +42,10 @@ public class LanguageApiString {
 
     public String getLanguageApiSave() {
         return languageApiBegin + languageApiSave;
+    }
+
+    public String getLanguageApiUpdate() {
+        return languageApiBegin + languageApiUpdate;
     }
 
     public String getLanguageApiDelete() {

@@ -54,6 +54,18 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
+    public Optional<Language> update(Language language) {
+        log.info("Updated the language");
+        log.debug("Language: " + language);
+
+        if (language == null || language.getId() == null || languageRepository.findById(language.getId()).isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(languageRepository.save(language));
+    }
+
+    @Override
     public void delete(Language language) {
         log.info("Deleted the language");
         log.debug("Language: " + language);

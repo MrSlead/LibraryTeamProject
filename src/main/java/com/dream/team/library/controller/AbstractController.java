@@ -40,6 +40,16 @@ public class AbstractController<T> {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    public ResponseEntity<T> update(T t) {
+        Optional<T> obj = service.update(t);
+
+        if (obj.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(obj.get(), HttpStatus.OK);
+    }
+
     public void deleteById(Long objectId) {
         if (objectId != null ) {
             service.deleteById(objectId);

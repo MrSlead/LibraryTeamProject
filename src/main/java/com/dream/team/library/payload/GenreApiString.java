@@ -18,6 +18,9 @@ public class GenreApiString {
     @Value("${genre.api.save}")
     private String genreApiSave;
 
+    @Value("${genre.api.update}")
+    private String genreApiUpdate;
+
     @Value("${genre.api.delete}")
     private String genreApiDelete;
 
@@ -39,6 +42,10 @@ public class GenreApiString {
 
     public String getGenreApiSave() {
         return genreApiBegin + genreApiSave;
+    }
+
+    public String getGenreApiUpdate() {
+        return genreApiBegin + genreApiUpdate;
     }
 
     public String getGenreApiDelete() {

@@ -98,6 +98,18 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Optional<Client> update(Client client) {
+        log.info("Updated the client");
+        log.debug("Client: " + client);
+
+        if (client == null || client.getId() == null || clientRepository.findById(client.getId()).isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(clientRepository.save(client));
+    }
+
+    @Override
     public void deleteById(Long id) {
         Optional<Client> client = clientRepository.findById(id);
 
