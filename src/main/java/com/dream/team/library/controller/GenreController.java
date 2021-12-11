@@ -69,7 +69,7 @@ public class GenreController {
     }
 
     @DeleteMapping(value = "${genre.api.deleteById}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteById(@RequestBody Long genreId) {
+    public void deleteById(@PathVariable Long genreId) {
         log.info("API was called: {}", genreApiString.getGenreApiDeleteById());
 
         controller.deleteById(genreId);
