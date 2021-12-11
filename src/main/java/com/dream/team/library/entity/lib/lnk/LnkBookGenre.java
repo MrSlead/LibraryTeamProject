@@ -3,7 +3,6 @@ package com.dream.team.library.entity.lib.lnk;
 import com.dream.team.library.entity.lib.Book;
 import com.dream.team.library.entity.lib.Genre;
 import com.dream.team.library.entity.lib.lnk.composite_key.LnkBookGenreKey;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,11 +26,9 @@ public class LnkBookGenre implements AbstractLnk {
 
     @ManyToOne
     @MapsId("bookId")
-    @JsonManagedReference
     private Book book;
 
     @ManyToOne
     @MapsId("genreId")
-    @JsonManagedReference
     private Genre genre;
 }

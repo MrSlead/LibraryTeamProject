@@ -2,13 +2,14 @@ package com.dream.team.library.entity.lib;
 
 import com.dream.team.library.entity.AbstractEntity;
 import com.dream.team.library.entity.lib.lnk.LnkBookGenre;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,7 +27,7 @@ public class Genre implements AbstractEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "genre")
-    @JsonBackReference
-    private Set<LnkBookGenre> lnkBookGenres;
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private final Set<LnkBookGenre> lnkBookGenres = new HashSet<>();
 }
