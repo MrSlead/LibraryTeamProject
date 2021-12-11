@@ -35,11 +35,9 @@ public class AbstractController<T> {
     }
 
     public ResponseEntity<T> save(T t) {
-        if (service.save(t).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        service.save(t);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     public void deleteById(Long objectId) {

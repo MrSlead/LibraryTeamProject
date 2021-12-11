@@ -46,11 +46,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Optional<Genre> save(Genre genre) {
+    public Genre save(Genre genre) {
         log.info("Saved the genre");
         log.debug("Genre: " + genre);
 
-        return Optional.of(genreRepository.save(genre));
+        return genreRepository.save(genre);
     }
 
     @Override

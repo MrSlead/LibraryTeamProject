@@ -33,4 +33,4 @@ build/
 ### VS Code ###
 .vscode/
 
-package-lock.json
+/src/main/frontend/package-lock.json

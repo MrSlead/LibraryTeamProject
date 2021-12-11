@@ -46,11 +46,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<Author> save(Author author) {
+    public Author save(Author author) {
         log.info("Saved the author");
         log.debug("Author: " + author);
 
-        return Optional.of(authorRepository.save(author));
+        return authorRepository.save(author);
     }
 
     @Override
