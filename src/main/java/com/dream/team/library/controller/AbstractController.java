@@ -21,7 +21,7 @@ public class AbstractController<T> {
 
         Optional<T> t = service.findById(objectId);
 
-        if(t.isEmpty()) {
+        if (t.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -35,7 +35,11 @@ public class AbstractController<T> {
     }
 
     public ResponseEntity<T> save(T t) {
-        service.save(t);
+        Optional<T> obj = service.save(t);
+
+        if (obj.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -52,10 +52,6 @@ public class LanguageController {
     public ResponseEntity<Language> save(@RequestBody Language language) {
         log.info("API was called: {}", languageApiString.getLanguageApiSave());
 
-        if (language == null || language.getId() != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         return controller.save(language);
     }
 
