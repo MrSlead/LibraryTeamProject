@@ -52,10 +52,6 @@ public class BookController {
     public ResponseEntity<Book> save(@RequestBody Book book) {
         log.info("API was called: {}", bookApiString.getBookApiSave());
 
-        if (book == null || book.getId() != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         return controller.save(book);
     }
 

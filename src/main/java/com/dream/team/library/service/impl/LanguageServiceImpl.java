@@ -46,11 +46,15 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public Language save(Language language) {
+    public Optional<Language> save(Language language) {
         log.info("Saved the language");
         log.debug("Language: " + language);
 
-        return languageRepository.save(language);
+        if (language == null || language.getId() != null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(languageRepository.save(language));
     }
 
     @Override

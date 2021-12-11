@@ -52,11 +52,7 @@ public class GenreController {
     public ResponseEntity<Genre> save(@RequestBody Genre genre) {
         log.info("API was called: {}", genreApiString.getGenreApiSave());
 
-        if (genre == null || genre.getId() != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-       return controller.save(genre);
+        return controller.save(genre);
     }
 
     @PutMapping(value = "${genre.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)

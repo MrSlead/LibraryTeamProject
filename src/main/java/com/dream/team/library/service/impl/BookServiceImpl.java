@@ -46,11 +46,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book save(Book book) {
+    public Optional<Book> save(Book book) {
         log.info("Saved the book");
         log.debug("Book: " + book);
 
-        return bookRepository.save(book);
+        if (book == null || book.getId() != null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(bookRepository.save(book));
     }
 
     @Override
