@@ -90,11 +90,11 @@ public class ClientServiceImpl implements ClientService {
         return clientList;
     }
     @Override
-    public Optional<Client> save(Client client) {
+    public Client save(Client client) {
         log.info("Saved the client");
         log.debug("Client: " + client);
 
-        return Optional.of(clientRepository.save(client));
+        return clientRepository.save(client);
     }
 
     @Override
