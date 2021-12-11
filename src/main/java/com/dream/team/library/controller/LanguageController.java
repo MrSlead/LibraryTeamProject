@@ -59,6 +59,13 @@ public class LanguageController {
         return controller.save(language);
     }
 
+    @PutMapping(value = "${language.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Language> update(@RequestBody Language language) {
+        log.info("API was called: {}", languageApiString.getLanguageApiUpdate());
+
+        return controller.update(language);
+    }
+
     @DeleteMapping(value = "${language.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(@RequestBody Language language) {
         log.info("API was called: {}", languageApiString.getLanguageApiDelete());

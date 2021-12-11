@@ -59,6 +59,13 @@ public class AuthorController {
         return controller.save(author);
     }
 
+    @PutMapping(value = "${author.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Author> update(@RequestBody Author author) {
+        log.info("API was called: {}", authorApiString.getAuthorApiUpdate());
+
+        return controller.update(author);
+    }
+
     @DeleteMapping(value = "${author.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(@RequestBody Author author) {
         log.info("API was called: {}", authorApiString.getAuthorApiDelete());

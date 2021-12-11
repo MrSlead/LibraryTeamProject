@@ -54,6 +54,18 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public Optional<Genre> update(Genre genre) {
+        log.info("Updated the genre");
+        log.debug("Genre: " + genre);
+
+        if (genre == null || genre.getId() == null || genreRepository.findById(genre.getId()).isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(genreRepository.save(genre));
+    }
+
+    @Override
     public void delete(Genre genre) {
         log.info("Deleted the genre");
         log.debug("Genre: " + genre);

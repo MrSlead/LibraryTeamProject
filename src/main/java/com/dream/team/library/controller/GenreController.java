@@ -59,6 +59,13 @@ public class GenreController {
        return controller.save(genre);
     }
 
+    @PutMapping(value = "${genre.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Genre> update(@RequestBody Genre genre) {
+        log.info("API was called: {}", genreApiString.getGenreApiUpdate());
+
+        return controller.update(genre);
+    }
+
     @DeleteMapping(value = "${genre.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(@RequestBody Genre genre) {
         log.info("API was called: {}", genreApiString.getGenreApiDelete());

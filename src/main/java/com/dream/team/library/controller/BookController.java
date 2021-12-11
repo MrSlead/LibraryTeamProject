@@ -36,7 +36,7 @@ public class BookController {
 
     @GetMapping("${book.api.getById}")
     public ResponseEntity<Optional<Book>> getClientById(@PathVariable Long bookId) {
-        log.info("API was called: {}", bookApiString.getBookApiGetById());
+        log.info("API was called: {}", bookApiString.getBookApiUpdate());
 
         return controller.getObjectById(bookId);
     }
@@ -57,6 +57,13 @@ public class BookController {
         }
 
         return controller.save(book);
+    }
+
+    @PutMapping(value = "${book.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Book> update(@RequestBody Book book) {
+        log.info("API was called: {}", bookApiString.getBookApiSave());
+
+        return controller.update(book);
     }
 
     @DeleteMapping(value = "${book.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)

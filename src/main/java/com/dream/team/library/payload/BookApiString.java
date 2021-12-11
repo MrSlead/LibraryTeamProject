@@ -18,6 +18,10 @@ public class BookApiString {
     @Value("${book.api.save}")
     private String bookApiSave;
 
+    @Value("${book.api.update}")
+    private String bookApiUpdate;
+
+
     @Value("${book.api.delete}")
     private String bookApiDelete;
 
@@ -39,6 +43,10 @@ public class BookApiString {
 
     public String getBookApiSave() {
         return bookApiBegin + bookApiSave;
+    }
+
+    public String getBookApiUpdate() {
+        return bookApiBegin + bookApiUpdate;
     }
 
     public String getBookApiDelete() {

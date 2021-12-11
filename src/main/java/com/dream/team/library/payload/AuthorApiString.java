@@ -18,6 +18,9 @@ public class AuthorApiString {
     @Value("${author.api.save}")
     private String authorApiSave;
 
+    @Value("${author.api.update}")
+    private String authorApiUpdate;
+
     @Value("${author.api.delete}")
     private String authorApiDelete;
 
@@ -39,6 +42,10 @@ public class AuthorApiString {
 
     public String getAuthorApiSave() {
         return authorApiBegin + authorApiSave;
+    }
+
+    public String getAuthorApiUpdate() {
+        return authorApiBegin + authorApiUpdate;
     }
 
     public String getAuthorApiDelete() {

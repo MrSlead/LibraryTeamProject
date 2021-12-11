@@ -54,6 +54,18 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public Optional<Author> update(Author author) {
+        log.info("Updated the author");
+        log.debug("Author: " + author);
+
+        if (author == null || author.getId() == null || authorRepository.findById(author.getId()).isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(authorRepository.save(author));
+    }
+
+    @Override
     public void delete(Author author) {
         log.info("Deleted the author");
         log.debug("Author: " + author);
