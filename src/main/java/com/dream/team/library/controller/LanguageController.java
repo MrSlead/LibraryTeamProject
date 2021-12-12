@@ -1,11 +1,10 @@
 package com.dream.team.library.controller;
 
-import com.dream.team.library.entity.lib.Language;
+import com.dream.team.library.dto.LanguageDto;
 import com.dream.team.library.payload.LanguageApiString;
 import com.dream.team.library.service.interf.LanguageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("${language.api.begin}")
 public class LanguageController {
-    private AbstractController<Language> controller;
+    private AbstractController<LanguageDto> controller;
     private LanguageService languageService;
     private LanguageApiString languageApiString;
 
@@ -35,39 +34,39 @@ public class LanguageController {
     }
 
     @GetMapping("${language.api.getById}")
-    public ResponseEntity<Optional<Language>> getClientById(@PathVariable Long languageId) {
+    public ResponseEntity<Optional<LanguageDto>> getClientById(@PathVariable Long languageId) {
         log.info("API was called: {}", languageApiString.getLanguageApiGetById());
 
         return controller.getObjectById(languageId);
     }
 
     @GetMapping("${language.api.getAll}")
-    public ResponseEntity<List<Language>> getAll() {
+    public ResponseEntity<List<LanguageDto>> getAll() {
         log.info("API was called: {}", languageApiString.getLanguageApiGetAll());
 
         return controller.getAll();
     }
 
     @PostMapping(value = "${language.api.save}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Language> save(@RequestBody Language language) {
+    public ResponseEntity<LanguageDto> save(@RequestBody LanguageDto languageDto) {
         log.info("API was called: {}", languageApiString.getLanguageApiSave());
 
-        return controller.save(language);
+        return controller.save(languageDto);
     }
 
     @PutMapping(value = "${language.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Language> update(@RequestBody Language language) {
+    public ResponseEntity<LanguageDto> update(@RequestBody LanguageDto languageDto) {
         log.info("API was called: {}", languageApiString.getLanguageApiUpdate());
 
-        return controller.update(language);
+        return controller.update(languageDto);
     }
 
     @DeleteMapping(value = "${language.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@RequestBody Language language) {
+    public void delete(@RequestBody LanguageDto languageDto) {
         log.info("API was called: {}", languageApiString.getLanguageApiDelete());
 
-        if (language != null && language.getId() != null) {
-            languageService.delete(language);
+        if (languageDto != null && languageDto.getId() != null) {
+            languageService.delete(languageDto);
         }
     }
 

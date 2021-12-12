@@ -1,6 +1,8 @@
 package com.dream.team.library.service.impl;
 
+import com.dream.team.library.dto.BookDto;
 import com.dream.team.library.entity.lib.Book;
+import com.dream.team.library.mapper.BookMapper;
 import com.dream.team.library.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import com.dream.team.library.service.interf.BookService;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,17 +24,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findAll() {
+    public List<BookDto> findAll() {
         List<Book> bookList = bookRepository.findAll();
 
         log.info("Returned all books");
         log.debug("Size of books: " + bookList.size());
 
-        return bookList;
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Book> findById(Long id) {
+    public Optional<BookDto> findById(Long id) {
         Optional<Book> book = bookRepository.findById(id);
 
         if (book.isPresent()) {
@@ -40,41 +45,45 @@ public class BookServiceImpl implements BookService {
         }
         else {
             log.info("Couldn't find the genre by id: " + id);
+
+            return Optional.empty();
         }
 
-        return book;
+        return Optional.of(BookMapper.INSTANCE.toDTO(book.get()));
     }
 
     @Override
-    public Optional<Book> save(Book book) {
+    public Optional<BookDto> save(BookDto bookDto) {
         log.info("Saved the book");
-        log.debug("Book: " + book);
+        log.debug("Book: " + bookDto);
 
-        if (book == null || book.getId() != null) {
+        if (bookDto == null || bookDto.getId() != null) {
             return Optional.empty();
         }
 
-        return Optional.of(bookRepository.save(book));
+        Book book = bookRepository.save(BookMapper.INSTANCE.toBook(bookDto));
+        return Optional.of(BookMapper.INSTANCE.toDTO(book));
     }
 
     @Override
-    public Optional<Book> update(Book book) {
+    public Optional<BookDto> update(BookDto bookDto) {
         log.info("Updated the book");
-        log.debug("Book: " + book);
+        log.debug("Book: " + bookDto);
 
-        if (book == null || book.getId() == null || bookRepository.findById(book.getId()).isEmpty()) {
+        if (bookDto == null || bookDto.getId() == null || bookRepository.findById(bookDto.getId()).isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(bookRepository.save(book));
+        Book book = bookRepository.save(BookMapper.INSTANCE.toBook(bookDto));
+        return Optional.of(BookMapper.INSTANCE.toDTO(book));
     }
 
     @Override
-    public void delete(Book book) {
+    public void delete(BookDto bookDto) {
         log.info("Deleted the book");
-        log.debug("Book: " + book);
+        log.debug("Book: " + bookDto);
 
-        bookRepository.delete(book);
+        bookRepository.delete(BookMapper.INSTANCE.toBook(bookDto));
     }
 
     @Override

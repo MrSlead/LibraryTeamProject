@@ -1,6 +1,8 @@
 package com.dream.team.library.service.impl;
 
+import com.dream.team.library.dto.AuthorDto;
 import com.dream.team.library.entity.lib.Author;
+import com.dream.team.library.mapper.AuthorMapper;
 import com.dream.team.library.repository.AuthorRepository;
 import com.dream.team.library.service.interf.AuthorService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,17 +24,19 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> findAll() {
+    public List<AuthorDto> findAll() {
         List<Author> authorList = authorRepository.findAll();
 
         log.info("Returned all authors");
         log.debug("Size of authors: " + authorList.size());
 
-        return authorList;
+        return authorList.stream()
+                .map(AuthorMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Author> findById(Long id) {
+    public Optional<AuthorDto> findById(Long id) {
         Optional<Author> author = authorRepository.findById(id);
 
         if (author.isPresent()) {
@@ -40,41 +45,45 @@ public class AuthorServiceImpl implements AuthorService {
         }
         else {
             log.info("Couldn't find the author by id: " + id);
+
+            return Optional.empty();
         }
 
-        return author;
+        return Optional.of(AuthorMapper.INSTANCE.toDTO(author.get()));
     }
 
     @Override
-    public Optional<Author> save(Author author) {
+    public Optional<AuthorDto> save(AuthorDto authorDto) {
         log.info("Saved the author");
-        log.debug("Author: " + author);
+        log.debug("Author: " + authorDto);
 
-        if (author == null || author.getId() != null) {
+        if (authorDto == null || authorDto.getId() != null) {
             return Optional.empty();
         }
 
-        return Optional.of(authorRepository.save(author));
+        Author author = authorRepository.save(AuthorMapper.INSTANCE.toAuthor(authorDto));
+        return Optional.of(AuthorMapper.INSTANCE.toDTO(author));
     }
 
     @Override
-    public Optional<Author> update(Author author) {
+    public Optional<AuthorDto> update(AuthorDto authorDto) {
         log.info("Updated the author");
-        log.debug("Author: " + author);
+        log.debug("Author: " + authorDto);
 
-        if (author == null || author.getId() == null || authorRepository.findById(author.getId()).isEmpty()) {
+        if (authorDto == null || authorDto.getId() == null || authorRepository.findById(authorDto.getId()).isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(authorRepository.save(author));
+        Author author = authorRepository.save(AuthorMapper.INSTANCE.toAuthor(authorDto));
+        return Optional.of(AuthorMapper.INSTANCE.toDTO(author));
     }
 
     @Override
-    public void delete(Author author) {
+    public void delete(AuthorDto authorDto) {
         log.info("Deleted the author");
-        log.debug("Author: " + author);
+        log.debug("Author: " + authorDto);
 
-        authorRepository.delete(author);
+        authorRepository.delete(AuthorMapper.INSTANCE.toAuthor(authorDto));
     }
 
     @Override

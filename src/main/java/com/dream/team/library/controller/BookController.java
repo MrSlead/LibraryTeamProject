@@ -1,11 +1,10 @@
 package com.dream.team.library.controller;
 
-import com.dream.team.library.entity.lib.Book;
+import com.dream.team.library.dto.BookDto;
 import com.dream.team.library.payload.BookApiString;
 import com.dream.team.library.service.interf.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("${book.api.begin}")
 public class BookController {
-    private AbstractController<Book> controller;
+    private AbstractController<BookDto> controller;
     private BookService bookService;
     private BookApiString bookApiString;
 
@@ -35,39 +34,39 @@ public class BookController {
     }
 
     @GetMapping("${book.api.getById}")
-    public ResponseEntity<Optional<Book>> getClientById(@PathVariable Long bookId) {
+    public ResponseEntity<Optional<BookDto>> getClientById(@PathVariable Long bookId) {
         log.info("API was called: {}", bookApiString.getBookApiUpdate());
 
         return controller.getObjectById(bookId);
     }
 
     @GetMapping("${book.api.getAll}")
-    public ResponseEntity<List<Book>> getAll() {
+    public ResponseEntity<List<BookDto>> getAll() {
         log.info("API was called: {}", bookApiString.getBookApiGetAll());
 
         return controller.getAll();
     }
 
     @PostMapping(value = "${book.api.save}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> save(@RequestBody Book book) {
+    public ResponseEntity<BookDto> save(@RequestBody BookDto bookDto) {
         log.info("API was called: {}", bookApiString.getBookApiSave());
 
-        return controller.save(book);
+        return controller.save(bookDto);
     }
 
     @PutMapping(value = "${book.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> update(@RequestBody Book book) {
+    public ResponseEntity<BookDto> update(@RequestBody BookDto bookDto) {
         log.info("API was called: {}", bookApiString.getBookApiSave());
 
-        return controller.update(book);
+        return controller.update(bookDto);
     }
 
     @DeleteMapping(value = "${book.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@RequestBody Book book) {
+    public void delete(@RequestBody BookDto bookDto) {
         log.info("API was called: {}", bookApiString.getBookApiDelete());
 
-        if (book != null && book.getId() != null) {
-            bookService.delete(book);
+        if (bookDto != null && bookDto.getId() != null) {
+            bookService.delete(bookDto);
         }
     }
 

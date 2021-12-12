@@ -1,6 +1,6 @@
 package com.dream.team.library.service.interf;
 
-import com.dream.team.library.entity.lib.Author;
+import com.dream.team.library.dto.AuthorDto;
 
-public interface AuthorService extends AbstractService<Author, Long> {
+public interface AuthorService extends AbstractService<AuthorDto, Long> {
 }
