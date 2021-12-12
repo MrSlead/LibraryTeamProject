@@ -83,7 +83,9 @@ public class LanguageServiceImpl implements LanguageService {
         log.info("Deleted the language");
         log.debug("Language: " + languageDto);
 
-        languageRepository.delete(LanguageMapper.INSTANCE.toLanguage(languageDto));
+        if (languageDto != null && languageDto.getId() != null) {
+            languageRepository.delete(LanguageMapper.INSTANCE.toLanguage(languageDto));
+        }
     }
 
     @Override

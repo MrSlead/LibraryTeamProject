@@ -170,9 +170,7 @@ public class GenreController {
     public void delete(@RequestBody GenreDto genreDto) {
         log.info("API was called: {}", genreApiString.getGenreApiDelete());
 
-        if (genreDto != null && genreDto.getId() != null) {
-            genreService.delete(genreDto);
-        }
+        controller.delete(genreDto);
     }
 
     @Operation(summary = "Deleting the genre by id", tags = "genre")

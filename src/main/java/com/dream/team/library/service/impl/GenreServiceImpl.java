@@ -83,7 +83,9 @@ public class GenreServiceImpl implements GenreService {
         log.info("Deleted the genre");
         log.debug("Genre: " + genreDto);
 
-        genreRepository.delete(GenreMapper.INSTANCE.toGenre(genreDto));
+        if (genreDto != null && genreDto.getId() != null) {
+            genreRepository.delete(GenreMapper.INSTANCE.toGenre(genreDto));
+        }
     }
 
     @Override

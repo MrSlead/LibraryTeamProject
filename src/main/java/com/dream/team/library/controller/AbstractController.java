@@ -54,6 +54,12 @@ public class AbstractController<T> {
         return new ResponseEntity<>(obj.get(), HttpStatus.OK);
     }
 
+    public void delete(T t) {
+        if (t != null ) {
+            service.delete(t);
+        }
+    }
+
     public void deleteById(Long objectId) {
         if (objectId != null ) {
             service.deleteById(objectId);

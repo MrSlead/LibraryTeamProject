@@ -169,9 +169,7 @@ public class BookController {
     public void delete(@RequestBody BookDto bookDto) {
         log.info("API was called: {}", bookApiString.getBookApiDelete());
 
-        if (bookDto != null && bookDto.getId() != null) {
-            bookService.delete(bookDto);
-        }
+        controller.delete(bookDto);
     }
 
     @Operation(summary = "Deleting the book by id", tags = "book")
