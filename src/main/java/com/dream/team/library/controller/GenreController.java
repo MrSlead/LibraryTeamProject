@@ -1,5 +1,6 @@
 package com.dream.team.library.controller;
 
+import com.dream.team.library.dto.GenreDto;
 import com.dream.team.library.entity.lib.Genre;
 import com.dream.team.library.payload.GenreApiString;
 import com.dream.team.library.service.interf.GenreService;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("${genre.api.begin}")
 public class GenreController {
-    private AbstractController<Genre> controller;
+    private AbstractController<GenreDto> controller;
     private GenreService genreService;
     private GenreApiString genreApiString;
 
@@ -35,39 +36,39 @@ public class GenreController {
     }
 
     @GetMapping("${genre.api.getById}")
-    public ResponseEntity<Optional<Genre>> getClientById(@PathVariable Long genreId) {
+    public ResponseEntity<Optional<GenreDto>> getClientById(@PathVariable Long genreId) {
         log.info("API was called: {}", genreApiString.getGenreApiGetById());
 
         return controller.getObjectById(genreId);
     }
 
     @GetMapping("${genre.api.getAll}")
-    public ResponseEntity<List<Genre>> getAll() {
+    public ResponseEntity<List<GenreDto>> getAll() {
         log.info("API was called: {}", genreApiString.getGenreApiGetAll());
 
         return controller.getAll();
     }
 
     @PostMapping(value = "${genre.api.save}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Genre> save(@RequestBody Genre genre) {
+    public ResponseEntity<GenreDto> save(@RequestBody GenreDto genreDto) {
         log.info("API was called: {}", genreApiString.getGenreApiSave());
 
-        return controller.save(genre);
+        return controller.save(genreDto);
     }
 
     @PutMapping(value = "${genre.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Genre> update(@RequestBody Genre genre) {
+    public ResponseEntity<GenreDto> update(@RequestBody GenreDto genreDto) {
         log.info("API was called: {}", genreApiString.getGenreApiUpdate());
 
-        return controller.update(genre);
+        return controller.update(genreDto);
     }
 
     @DeleteMapping(value = "${genre.api.delete}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@RequestBody Genre genre) {
+    public void delete(@RequestBody GenreDto genreDto) {
         log.info("API was called: {}", genreApiString.getGenreApiDelete());
 
-        if (genre != null && genre.getId() != null) {
-            genreService.delete(genre);
+        if (genreDto != null && genreDto.getId() != null) {
+            genreService.delete(genreDto);
         }
     }
 

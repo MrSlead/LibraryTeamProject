@@ -1,6 +1,8 @@
 package com.dream.team.library.service.impl;
 
+import com.dream.team.library.dto.LanguageDto;
 import com.dream.team.library.entity.lib.Language;
+import com.dream.team.library.mapper.LanguageMapper;
 import com.dream.team.library.repository.LanguageRepository;
 import com.dream.team.library.service.interf.LanguageService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,17 +24,19 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public List<Language> findAll() {
+    public List<LanguageDto> findAll() {
         List<Language> languageList = languageRepository.findAll();
 
         log.info("Returned all languages");
         log.debug("Size of languages: " + languageList.size());
 
-        return languageList;
+        return languageList.stream()
+                .map(LanguageMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Language> findById(Long id) {
+    public Optional<LanguageDto> findById(Long id) {
         Optional<Language> language = languageRepository.findById(id);
 
         if (language.isPresent()) {
@@ -40,41 +45,45 @@ public class LanguageServiceImpl implements LanguageService {
         }
         else {
             log.info("Couldn't find the language by id: " + id);
+
+            return Optional.empty();
         }
 
-        return language;
+        return Optional.of(LanguageMapper.INSTANCE.toDTO(language.get()));
     }
 
     @Override
-    public Optional<Language> save(Language language) {
+    public Optional<LanguageDto> save(LanguageDto languageDto) {
         log.info("Saved the language");
-        log.debug("Language: " + language);
+        log.debug("Language: " + languageDto);
 
-        if (language == null || language.getId() != null) {
+        if (languageDto == null || languageDto.getId() != null) {
             return Optional.empty();
         }
 
-        return Optional.of(languageRepository.save(language));
+        Language language = languageRepository.save(LanguageMapper.INSTANCE.toLanguage(languageDto));
+        return Optional.of(LanguageMapper.INSTANCE.toDTO(language));
     }
 
     @Override
-    public Optional<Language> update(Language language) {
+    public Optional<LanguageDto> update(LanguageDto languageDto) {
         log.info("Updated the language");
-        log.debug("Language: " + language);
+        log.debug("Language: " + languageDto);
 
-        if (language == null || language.getId() == null || languageRepository.findById(language.getId()).isEmpty()) {
+        if (languageDto == null || languageDto.getId() == null || languageRepository.findById(languageDto.getId()).isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(languageRepository.save(language));
+        Language language = languageRepository.save(LanguageMapper.INSTANCE.toLanguage(languageDto));
+        return Optional.of(LanguageMapper.INSTANCE.toDTO(language));
     }
 
     @Override
-    public void delete(Language language) {
+    public void delete(LanguageDto languageDto) {
         log.info("Deleted the language");
-        log.debug("Language: " + language);
+        log.debug("Language: " + languageDto);
 
-        languageRepository.delete(language);
+        languageRepository.delete(LanguageMapper.INSTANCE.toLanguage(languageDto));
     }
 
     @Override

@@ -18,12 +18,14 @@ import java.util.Optional;
 @CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("${client.api.begin}")
 public class ClientController {
+    private AbstractController<Client> controller;
     private ClientService clientService;
     private ClientApiString clientApiString;
 
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+        this.controller = new AbstractController<>(clientService);
     }
 
     @Autowired
@@ -35,17 +37,7 @@ public class ClientController {
     public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long clientId) {
         log.info("API was called: " + clientApiString.getClientApiGetById());
 
-        if(clientId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Optional<Client> client = clientService.findById(clientId);
-
-        if(client.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        return controller.getObjectById(clientId);
     }
 
     @GetMapping("${client.api.getByLogin}")
@@ -68,9 +60,8 @@ public class ClientController {
     @GetMapping("${client.api.getAll}")
     public ResponseEntity<List<Client>> findAll() {
         log.info("API was called: " + clientApiString.getClientApiGetAll());
-        List<Client> clientList = clientService.findAll();
 
-        return new ResponseEntity<>(clientList, HttpStatus.OK);
+        return controller.getAll();
     }
 
     @GetMapping("${client.api.getPremium}")
