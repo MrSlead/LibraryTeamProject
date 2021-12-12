@@ -83,7 +83,9 @@ public class BookServiceImpl implements BookService {
         log.info("Deleted the book");
         log.debug("Book: " + bookDto);
 
-        bookRepository.delete(BookMapper.INSTANCE.toBook(bookDto));
+        if (bookDto != null && bookDto.getId() != null) {
+            bookRepository.delete(BookMapper.INSTANCE.toBook(bookDto));
+        }
     }
 
     @Override

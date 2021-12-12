@@ -83,7 +83,9 @@ public class AuthorServiceImpl implements AuthorService {
         log.info("Deleted the author");
         log.debug("Author: " + authorDto);
 
-        authorRepository.delete(AuthorMapper.INSTANCE.toAuthor(authorDto));
+        if (authorDto != null && authorDto.getId() != null) {
+            authorRepository.delete(AuthorMapper.INSTANCE.toAuthor(authorDto));
+        }
     }
 
     @Override

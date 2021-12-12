@@ -174,9 +174,7 @@ public class AuthorController {
     public void delete(@RequestBody AuthorDto authorDto) {
         log.info("API was called: {}", authorApiString.getAuthorApiDelete());
 
-        if (authorDto != null && authorDto.getId() != null) {
-            authorService.delete(authorDto);
-        }
+        controller.delete(authorDto);
     }
 
     @Operation(summary = "Deleting the author by id", tags = "author")

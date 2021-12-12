@@ -169,9 +169,7 @@ public class LanguageController {
     public void delete(@RequestBody LanguageDto languageDto) {
         log.info("API was called: {}", languageApiString.getLanguageApiDelete());
 
-        if (languageDto != null && languageDto.getId() != null) {
-            languageService.delete(languageDto);
-        }
+        controller.delete(languageDto);
     }
 
     @Operation(summary = "Deleting the language by id", tags = "language")
