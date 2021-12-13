@@ -8,9 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.dream.team.library.service.interf.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -50,6 +48,109 @@ public class BookServiceImpl implements BookService {
         }
 
         return Optional.of(BookMapper.INSTANCE.toDTO(book.get()));
+    }
+
+    @Override
+    public List<BookDto> findAllByName(String name) {
+        log.info("Returned all books by name");
+
+        if (name == null || name.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Book> bookList = bookRepository.findAllByName(name);
+
+        log.debug("Size of books: " + bookList.size());
+
+
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDto> findAllByLanguage(String language) {
+        log.info("Returned all books by language");
+
+        if (language == null || language.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Book> bookList = bookRepository.findAllByLanguage(language);
+
+        log.debug("Size of books: " + bookList.size());
+
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDto> findAllByNumberOfPages(Long numberOfPages) {
+        log.info("Returned all books by number of pages");
+
+        if (numberOfPages == null || numberOfPages <= 0) {
+            return Collections.emptyList();
+        }
+
+        List<Book> bookList = bookRepository.findAllByNumberOfPages(numberOfPages);
+
+        log.debug("Size of books: " + bookList.size());
+
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDto> findAllByNumberOfPagesBetween(Long startNumber, Long endNumber) {
+        log.info("Returned all books by number of pages between start number and end number");
+
+        if (startNumber == null || endNumber == null || startNumber <= 0 || endNumber <= 0) {
+            return Collections.emptyList();
+        }
+
+        List<Book> bookList = bookRepository.findAllByNumberOfPagesBetween(startNumber, endNumber);
+
+        log.debug("Size of books: " + bookList.size());
+
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDto> findAllByDateOfPublication(Date date) {
+        log.info("Returned all books by date of publication");
+
+        if (date == null) {
+            return Collections.emptyList();
+        }
+
+        List<Book> bookList = bookRepository.findAllByDateOfPublication(date);
+
+        log.debug("Size of books: " + bookList.size());
+
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDto> findAllByDateOfPublicationBetween(Date startDate, Date endDate) {
+        log.info("Returned all books by number of pages between start date and end date");
+
+        if (startDate == null || endDate == null) {
+            return Collections.emptyList();
+        }
+
+        List<Book> bookList = bookRepository.findAllByDateOfPublicationBetween(startDate, endDate);
+
+        log.debug("Size of books: " + bookList.size());
+
+        return bookList.stream()
+                .map(BookMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
