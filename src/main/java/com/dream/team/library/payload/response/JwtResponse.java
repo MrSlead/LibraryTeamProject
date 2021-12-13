@@ -1,7 +1,5 @@
 package com.dream.team.library.payload.response;
 
-import com.dream.team.library.entity.authorization.Role;
-
 public class JwtResponse {
     private String token;
     private String type = "Bearer";

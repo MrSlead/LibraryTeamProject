@@ -1,11 +1,11 @@
 package com.dream.team.library.entity.authorization;
 
 import com.dream.team.library.entity.AbstractEntity;
+import com.dream.team.library.entity.authorization.converter.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Setter

@@ -1,7 +1,7 @@
 package com.dream.team.library.service.impl;
 
 import com.dream.team.library.entity.authorization.Client;
-import com.dream.team.library.entity.authorization.Role;
+import com.dream.team.library.entity.authorization.converter.Role;
 import com.dream.team.library.repository.ClientRepository;
 import com.dream.team.library.service.interf.ClientService;
 import lombok.extern.slf4j.Slf4j;

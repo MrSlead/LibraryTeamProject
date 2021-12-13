@@ -1,6 +1,7 @@
 package com.dream.team.library.dto;
 
 import com.dream.team.library.entity.lib.Language;
+import com.dream.team.library.entity.lib.converter.BookFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,4 +13,5 @@ public class BookDto {
     private Date dateOfPublication;
     private Language language;
     private int numberOfPages;
+    private BookFormat bookFormat;
 }

@@ -1,6 +1,7 @@
 package com.dream.team.library.entity.lib;
 
 import com.dream.team.library.entity.AbstractEntity;
+import com.dream.team.library.entity.lib.converter.BookFormat;
 import com.dream.team.library.entity.lib.lnk.LnkBookAuthor;
 import com.dream.team.library.entity.lib.lnk.LnkBookGenre;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,6 +35,8 @@ public class Book implements AbstractEntity {
     private Language language;
 
     private int numberOfPages;
+
+    private BookFormat bookFormat;
 
     @OneToMany(mappedBy = "book")
     @JsonIgnore

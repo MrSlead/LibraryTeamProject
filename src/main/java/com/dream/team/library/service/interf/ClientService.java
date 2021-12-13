@@ -1,7 +1,7 @@
 package com.dream.team.library.service.interf;
 
 import com.dream.team.library.entity.authorization.Client;
-import com.dream.team.library.entity.authorization.Role;
+import com.dream.team.library.entity.authorization.converter.Role;
 import java.util.List;
 import java.util.Optional;
 
