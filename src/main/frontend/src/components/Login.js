@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
+import React, { useState, useRef } from 'react';
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
+import CheckButton from 'react-validation/build/button';
 
-import AuthService from "../services/authservice";
+import AuthService from '../services/authservice';
 
 const required = (value) => {
   if (!value) {
@@ -19,10 +19,10 @@ const Login = (props) => {
   const form = useRef();
   const checkBtn = useRef();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -37,7 +37,7 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    setMessage("");
+    setMessage('');
     setLoading(true);
 
     form.current.validateAll();
@@ -45,20 +45,18 @@ const Login = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         () => {
-          props.history.push("/profile");
+          props.history.push('/books');
           window.location.reload();
         },
         (error) => {
           const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
+            (error.response && error.response.data && error.response.data.message) ||
             error.message ||
             error.toString();
 
           setLoading(false);
           setMessage(resMessage);
-        }
+        },
       );
     } else {
       setLoading(false);
@@ -103,16 +101,12 @@ const Login = (props) => {
             className="form-group mt-4 is-invalid"
             id="validationServerUsername"
             aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback"
-            required
-          >
+            required>
             <button
               className="btn btn-primary btn-block"
               disabled={loading}
-              style={{ width: "100%" }}
-            >
-              {loading && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
+              style={{ width: '100%' }}>
+              {loading && <span className="spinner-border spinner-border-sm"></span>}
               <span>Login</span>
             </button>
           </div>
@@ -124,7 +118,7 @@ const Login = (props) => {
               </div>
             </div>
           )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
+          <CheckButton style={{ display: 'none' }} ref={checkBtn} />
         </Form>
       </div>
     </div>

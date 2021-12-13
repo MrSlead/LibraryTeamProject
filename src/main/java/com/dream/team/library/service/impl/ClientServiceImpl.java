@@ -1,7 +1,7 @@
 package com.dream.team.library.service.impl;
 
 import com.dream.team.library.entity.authorization.Client;
-import com.dream.team.library.entity.authorization.Role;
+import com.dream.team.library.entity.authorization.converter.Role;
 import com.dream.team.library.repository.ClientRepository;
 import com.dream.team.library.service.interf.ClientService;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +93,22 @@ public class ClientServiceImpl implements ClientService {
     public Optional<Client> save(Client client) {
         log.info("Saved the client");
         log.debug("Client: " + client);
+
+        if (client == null || client.getId() != null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(clientRepository.save(client));
+    }
+
+    @Override
+    public Optional<Client> update(Client client) {
+        log.info("Updated the client");
+        log.debug("Client: " + client);
+
+        if (client == null || client.getId() == null || clientRepository.findById(client.getId()).isEmpty()) {
+            return Optional.empty();
+        }
 
         return Optional.of(clientRepository.save(client));
     }

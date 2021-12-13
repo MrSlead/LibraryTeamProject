@@ -1,7 +1,7 @@
 package com.dream.team.library.controller;
 
 import com.dream.team.library.entity.authorization.Client;
-import com.dream.team.library.entity.authorization.Role;
+import com.dream.team.library.entity.authorization.converter.Role;
 import com.dream.team.library.payload.ClientApiString;
 import com.dream.team.library.service.interf.ClientService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +18,14 @@ import java.util.Optional;
 @CrossOrigin(origins = "${cross.origin.path}")
 @RequestMapping("${client.api.begin}")
 public class ClientController {
+    private AbstractController<Client> controller;
     private ClientService clientService;
     private ClientApiString clientApiString;
 
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+        this.controller = new AbstractController<>(clientService);
     }
 
     @Autowired
@@ -32,25 +34,25 @@ public class ClientController {
     }
 
     @GetMapping("${client.api.getById}")
-    public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long idClient) {
+    public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long clientId) {
         log.info("API was called: " + clientApiString.getClientApiGetById());
-        if(idClient == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        Optional<Client> client = clientService.findById(idClient);
-
-        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        return controller.getObjectById(clientId);
     }
 
     @GetMapping("${client.api.getByLogin}")
     public ResponseEntity<Optional<Client>> getClientByLogin(@PathVariable String login) {
         log.info("API was called: " + clientApiString.getClientApiGetByLogin());
-        if(login == null || login.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        if(login == null || login.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         Optional<Client> client = clientService.findByLogin(login);
 
-        if(client.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(client.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
@@ -58,9 +60,8 @@ public class ClientController {
     @GetMapping("${client.api.getAll}")
     public ResponseEntity<List<Client>> findAll() {
         log.info("API was called: " + clientApiString.getClientApiGetAll());
-        List<Client> clientList = clientService.findAll();
 
-        return new ResponseEntity<>(clientList, HttpStatus.OK);
+        return controller.getAll();
     }
 
     @GetMapping("${client.api.getPremium}")

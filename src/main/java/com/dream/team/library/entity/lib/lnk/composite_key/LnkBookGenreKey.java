@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 @Getter
@@ -20,5 +21,18 @@ public class LnkBookGenreKey implements AbstractKey {
     @Override
     public Long[] ids() {
         return new Long[]{ bookId, genreId };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LnkBookGenreKey that = (LnkBookGenreKey) o;
+        return Objects.equals(bookId, that.bookId) && Objects.equals(genreId, that.genreId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookId, genreId);
     }
 }

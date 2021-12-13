@@ -1,16 +1,16 @@
 package com.dream.team.library.entity.lib;
 
 import com.dream.team.library.entity.AbstractEntity;
+import com.dream.team.library.entity.lib.converter.BookFormat;
 import com.dream.team.library.entity.lib.lnk.LnkBookAuthor;
 import com.dream.team.library.entity.lib.lnk.LnkBookGenre;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,6 +28,7 @@ public class Book implements AbstractEntity {
 
     private String name;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dateOfPublication;
 
     @ManyToOne
@@ -35,11 +36,13 @@ public class Book implements AbstractEntity {
 
     private int numberOfPages;
 
-    @OneToMany(mappedBy = "book")
-    @JsonBackReference
-    private Set<LnkBookGenre> lnkBookGenres;
+    private BookFormat bookFormat;
 
     @OneToMany(mappedBy = "book")
-    @JsonBackReference
-    private Set<LnkBookAuthor> lnkBookAuthors;
+    @JsonIgnore
+    private final Set<LnkBookGenre> lnkBookGenres = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private final Set<LnkBookAuthor> lnkBookAuthors = new HashSet<>();
 }
