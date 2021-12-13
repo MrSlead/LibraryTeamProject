@@ -15,12 +15,29 @@ public class BookApiString {
     @Value("${book.api.getAll}")
     private String bookApiGetAll;
 
+    @Value("${book.api.getAllByName}")
+    private String bookApiGetAllByName;
+
+    @Value("${book.api.getAllByLanguage}")
+    private String bookApiGetAllByLanguage;
+
+    @Value("${book.api.getAllByNumberOfPages}")
+    private String bookApiGetAllByNumberOfPages;
+
+    @Value("${book.api.getAllByNumberOfPagesBetween}")
+    private String bookApiGetAllByNumberOfPagesBetween;
+
+    @Value("${book.api.getAllByDateOfPublication}")
+    private String bookApiGetAllByDateOfPublication;
+
+    @Value("${book.api.getAllByDateOfPublicationBetween}")
+    private String bookApiGetAllByDateOfPublicationBetween;
+
     @Value("${book.api.save}")
     private String bookApiSave;
 
     @Value("${book.api.update}")
     private String bookApiUpdate;
-
 
     @Value("${book.api.delete}")
     private String bookApiDelete;
@@ -34,26 +51,50 @@ public class BookApiString {
     }
 
     public String getBookApiGetById() {
-        return bookApiBegin + bookApiGetById;
+        return getBookApiBegin() + bookApiGetById;
     }
 
     public String getBookApiGetAll() {
-        return bookApiBegin + bookApiGetAll;
+        return getBookApiBegin() + bookApiGetAll;
+    }
+
+    public String getBookApiGetAllByName() {
+        return getBookApiBegin() + bookApiGetAllByName;
+    }
+
+    public String getBookApiGetAllByLanguage() {
+        return getBookApiBegin() + bookApiGetAllByLanguage;
+    }
+
+    public String getBookApiGetAllByNumberOfPages() {
+        return getBookApiBegin() + bookApiGetAllByNumberOfPages;
+    }
+
+    public String getBookApiGetAllByNumberOfPagesBetween() {
+        return getBookApiBegin() + bookApiGetAllByNumberOfPagesBetween;
+    }
+
+    public String getBookApiGetAllByDateOfPublication() {
+        return getBookApiBegin() + bookApiGetAllByDateOfPublication;
+    }
+
+    public String getBookApiGetAllByDateOfPublicationBetween() {
+        return getBookApiBegin() + bookApiGetAllByDateOfPublicationBetween;
     }
 
     public String getBookApiSave() {
-        return bookApiBegin + bookApiSave;
+        return getBookApiBegin() + bookApiSave;
     }
 
     public String getBookApiUpdate() {
-        return bookApiBegin + bookApiUpdate;
+        return getBookApiBegin() + bookApiUpdate;
     }
 
     public String getBookApiDelete() {
-        return bookApiBegin + bookApiDelete;
+        return getBookApiBegin() + bookApiDelete;
     }
 
     public String getBookApiDeleteById() {
-        return bookApiBegin + bookApiDeleteById;
+        return getBookApiBegin() + bookApiDeleteById;
     }
 }
