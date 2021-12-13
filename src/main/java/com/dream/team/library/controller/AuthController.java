@@ -1,7 +1,7 @@
 package com.dream.team.library.controller;
 
 import com.dream.team.library.entity.authorization.Client;
-import com.dream.team.library.entity.authorization.Role;
+import com.dream.team.library.entity.authorization.converter.Role;
 import com.dream.team.library.payload.AuthApiString;
 import com.dream.team.library.payload.request.LoginRequest;
 import com.dream.team.library.payload.request.RegistrationRequest;

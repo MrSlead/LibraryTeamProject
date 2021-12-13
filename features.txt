@@ -8,3 +8,4 @@
 8 - добавление поддержки swagger для описания API
 9 - добавление equals() и hashCode() для LnkBookAuthorKey и LnkBookGenreKey
 10 - перенос логики метода delete в сервис
+11 - добавление формата книги и изменение Role enum
