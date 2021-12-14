@@ -42,7 +42,6 @@ public class BookController {
     @Autowired
     public void setBookService(BookService bookService) {
         this.bookService = bookService;
-        //this.controller = new AbstractBookDataController<>(bookService);
     }
 
     @Autowired

@@ -15,6 +15,9 @@ public class GenreApiString {
     @Value("${genre.api.getAll}")
     private String genreApiGetAll;
 
+    @Value("${genre.api.getAllByName}")
+    private String genreApiGetAllByName;
+
     @Value("${genre.api.save}")
     private String genreApiSave;
 
@@ -33,26 +36,30 @@ public class GenreApiString {
     }
 
     public String getGenreApiGetById() {
-        return genreApiBegin + genreApiGetById;
+        return getGenreApiBegin() + genreApiGetById;
     }
 
     public String getGenreApiGetAll() {
-        return genreApiBegin + genreApiGetAll;
+        return getGenreApiBegin() + genreApiGetAll;
+    }
+
+    public String getGenreApiGetAllByName() {
+        return getGenreApiBegin() + genreApiGetAllByName;
     }
 
     public String getGenreApiSave() {
-        return genreApiBegin + genreApiSave;
+        return getGenreApiBegin() + genreApiSave;
     }
 
     public String getGenreApiUpdate() {
-        return genreApiBegin + genreApiUpdate;
+        return getGenreApiBegin() + genreApiUpdate;
     }
 
     public String getGenreApiDelete() {
-        return genreApiBegin + genreApiDelete;
+        return getGenreApiBegin() + genreApiDelete;
     }
 
     public String getGenreApiDeleteById() {
-        return genreApiBegin + genreApiDeleteById;
+        return getGenreApiBegin() + genreApiDeleteById;
     }
 }
