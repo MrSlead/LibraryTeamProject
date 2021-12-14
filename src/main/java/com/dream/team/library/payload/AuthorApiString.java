@@ -15,6 +15,15 @@ public class AuthorApiString {
     @Value("${author.api.getAll}")
     private String authorApiGetAll;
 
+    @Value("${author.api.getAllByName}")
+    private String authorApiGetAllByName;
+
+    @Value("${author.api.getAllBySurname}")
+    private String authorApiGetAllBySurname;
+
+    @Value("${author.api.getAllByPatronymic}")
+    private String authorApiGetAllByPatronymic;
+
     @Value("${author.api.save}")
     private String authorApiSave;
 
@@ -33,26 +42,38 @@ public class AuthorApiString {
     }
 
     public String getAuthorApiGetById() {
-        return authorApiBegin + authorApiGetById;
+        return getAuthorApiBegin() + authorApiGetById;
     }
 
     public String getAuthorApiGetAll() {
-        return authorApiBegin + authorApiGetAll;
+        return getAuthorApiBegin() + authorApiGetAll;
+    }
+
+    public String getAuthorApiGetAllByName() {
+        return getAuthorApiBegin() + authorApiGetAllByName;
+    }
+
+    public String getAuthorApiGetAllBySurname() {
+        return getAuthorApiBegin() + authorApiGetAllBySurname;
+    }
+
+    public String getAuthorApiGetAllByPatronymic() {
+        return getAuthorApiBegin() + authorApiGetAllByPatronymic;
     }
 
     public String getAuthorApiSave() {
-        return authorApiBegin + authorApiSave;
+        return getAuthorApiBegin() + authorApiSave;
     }
 
     public String getAuthorApiUpdate() {
-        return authorApiBegin + authorApiUpdate;
+        return getAuthorApiBegin() + authorApiUpdate;
     }
 
     public String getAuthorApiDelete() {
-        return authorApiBegin + authorApiDelete;
+        return getAuthorApiBegin() + authorApiDelete;
     }
 
     public String getAuthorApiDeleteById() {
-        return authorApiBegin + authorApiDeleteById;
+        return getAuthorApiBegin() + authorApiDeleteById;
     }
 }

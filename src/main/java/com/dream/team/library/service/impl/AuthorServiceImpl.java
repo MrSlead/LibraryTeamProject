@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +51,57 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         return Optional.of(AuthorMapper.INSTANCE.toDTO(author.get()));
+    }
+
+    @Override
+    public List<AuthorDto> findAllByName(String name) {
+        log.info("Returned all authors by name");
+
+        if (name == null || name.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Author> authorList = authorRepository.findAllByName(name);
+
+        log.debug("Size of authors: " + authorList.size());
+
+        return authorList.stream()
+                .map(AuthorMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuthorDto> findAllBySurname(String surname) {
+        log.info("Returned all authors by surname");
+
+        if (surname == null || surname.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Author> authorList = authorRepository.findAllBySurname(surname);
+
+        log.debug("Size of authors: " + authorList.size());
+
+        return authorList.stream()
+                .map(AuthorMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuthorDto> findAllByPatronymic(String patronymic) {
+        log.info("Returned all authors by patronymic");
+
+        if (patronymic == null || patronymic.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Author> authorList = authorRepository.findAllByPatronymic(patronymic);
+
+        log.debug("Size of authors: " + authorList.size());
+
+        return authorList.stream()
+                .map(AuthorMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
