@@ -2,14 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthService from '../services/authservice';
 import Book from './Book';
+import axios from 'axios';
+
+import authHeader from '../services/authHead';
+
+const API_URL_BOOK = 'http://localhost:8080/api/v1/book/';
 
 const Books = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [value, setValue] = useState('');
   const [currentUser, setCurrentUser] = useState(undefined);
-  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const getData = () => {
+    axios.get(API_URL_BOOK + 'all', { headers: authHeader() }).then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+  };
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
+    getData();
     if (user) {
       setCurrentUser(user);
       // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
@@ -21,17 +37,18 @@ const Books = () => {
     AuthService.logout();
   };
 
-  const people = ['Siri', 'Alexa', 'Google', 'Facebook', 'Twitter', 'Linkedin', 'Sinkedin'];
-
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
+  const sortByAge = () => {
+    const sorted = [...data].sort((a, b) => {
+      return b.age - a.age;
+    });
+    setData(sorted);
   };
 
-  const results = !searchTerm
-    ? people
-    : people.filter((person) => person.toLowerCase().includes(searchTerm.toLocaleLowerCase()));
+  const results = data.filter((person) => person.name.toLowerCase().includes(value.toLowerCase()));
+
   return (
     <>
+      <button onClick={sortByAge}>sort</button>
       <nav class="navbar navbar-light bg-dark">
         <div class="container-fluid">
           <form class="d-flex">
@@ -40,8 +57,7 @@ const Books = () => {
               type="search"
               placeholder="Search"
               aria-label="Search"
-              value={searchTerm}
-              onChange={handleChange}
+              onChange={(event) => setValue(event.target.value)}
             />
             <button class="btn btn-dark" type="submit">
               Search
@@ -87,7 +103,7 @@ const Books = () => {
             <div className="aside__filter">
               <h3 className="aside__filter__title">Книга по жанру</h3>
               <a href="#" className="aside__filter__item">
-                Все жанры
+                Жанры
               </a>
               <a href="#" className="aside__filter__item">
                 Философия
@@ -122,7 +138,7 @@ const Books = () => {
               </a>
             </div>
           </aside>
-          <Book results={results} />
+          <Book results={results} loading={loading} error={error} />
         </div>
       </section>
       <footer className="footer">
