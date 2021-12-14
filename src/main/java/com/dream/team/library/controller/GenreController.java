@@ -1,5 +1,6 @@
 package com.dream.team.library.controller;
 
+import com.dream.team.library.dto.BookDto;
 import com.dream.team.library.dto.GenreDto;
 import com.dream.team.library.dto.LanguageDto;
 import com.dream.team.library.payload.GenreApiString;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +33,15 @@ public class GenreController {
     private GenreService genreService;
     private GenreApiString genreApiString;
 
+    @Qualifier("AbstractBookDataControllerForGenre")
+    @Autowired
+    public void setController(AbstractController<GenreDto> controller) {
+        this.controller = controller;
+    }
+
     @Autowired
     public void setGenreService(GenreService genreService) {
         this.genreService = genreService;
-        this.controller = new AbstractController<>(genreService);
     }
 
     @Autowired
@@ -96,6 +103,34 @@ public class GenreController {
         log.info("API was called: {}", genreApiString.getGenreApiGetAll());
 
         return controller.getAll();
+    }
+
+    @Operation(summary = "Gets all genres by name", tags = "genre")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the genres",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GenreDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${genre.api.getAllByName}")
+    public ResponseEntity<List<GenreDto>> getAllByName(@PathVariable String name) {
+        log.info("API was called: {}", genreApiString.getGenreApiGetAllByName());
+
+        return ((AbstractBookDataController<GenreDto>) controller).getAllByName(name);
     }
 
     @Operation(summary = "Saving the genre", tags = "genre")
