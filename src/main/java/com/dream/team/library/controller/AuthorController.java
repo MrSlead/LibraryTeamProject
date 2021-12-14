@@ -1,6 +1,7 @@
 package com.dream.team.library.controller;
 
 import com.dream.team.library.dto.AuthorDto;
+import com.dream.team.library.dto.BookDto;
 import com.dream.team.library.payload.AuthorApiString;
 import com.dream.team.library.service.interf.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +33,15 @@ public class AuthorController {
     private AuthorService authorService;
     private AuthorApiString authorApiString;
 
+    @Qualifier("AbstractBookDataControllerForAuthor")
+    @Autowired
+    public void setController(AbstractController<AuthorDto> controller) {
+        this.controller = controller;
+    }
+
     @Autowired
     public void setAuthorService(AuthorService authorService) {
         this.authorService = authorService;
-        this.controller = new AbstractController<>(authorService);
     }
 
     @Autowired
@@ -96,6 +103,102 @@ public class AuthorController {
         log.info("API was called: {}", authorApiString.getAuthorApiGetAll());
 
         return controller.getAll();
+    }
+
+    @Operation(summary = "Gets all authors by name", tags = "author")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the authors",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = AuthorDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${author.api.getAllByName}")
+    public ResponseEntity<List<AuthorDto>> getAllByName(@PathVariable String name) {
+        log.info("API was called: {}", authorApiString.getAuthorApiGetAllByName());
+
+        return ((AbstractBookDataController<AuthorDto>) controller).getAllByName(name);
+    }
+
+    @Operation(summary = "Gets all authors by surname", tags = "author")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the authors",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = AuthorDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${author.api.getAllBySurname}")
+    public ResponseEntity<List<AuthorDto>> getAllBySurname(@PathVariable String surname) {
+        log.info("API was called: {}", authorApiString.getAuthorApiGetAllBySurname());
+
+        List<AuthorDto> authorList = authorService.findAllBySurname(surname);
+
+        if (authorList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(authorList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Gets all authors by patronymic", tags = "author")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the authors",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = AuthorDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${author.api.getAllByPatronymic}")
+    public ResponseEntity<List<AuthorDto>> getAllByPatronymic(@PathVariable String patronymic) {
+        log.info("API was called: {}", authorApiString.getAuthorApiGetAllByPatronymic());
+
+        List<AuthorDto> authorList = authorService.findAllByPatronymic(patronymic);
+
+        if (authorList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(authorList, HttpStatus.OK);
     }
 
     @Operation(summary = "Saving the author", tags = "author")
