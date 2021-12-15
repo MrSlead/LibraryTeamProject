@@ -42,7 +42,7 @@ const Books = () => {
       return b.age - a.age;
     });
     setData(sorted);
-  };
+  }; // need fix
 
   const results = data.filter((person) => person.name.toLowerCase().includes(value.toLowerCase()));
 
