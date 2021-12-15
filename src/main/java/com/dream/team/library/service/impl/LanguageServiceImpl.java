@@ -1,7 +1,9 @@
 package com.dream.team.library.service.impl;
 
 import com.dream.team.library.dto.LanguageDto;
+import com.dream.team.library.entity.lib.Genre;
 import com.dream.team.library.entity.lib.Language;
+import com.dream.team.library.mapper.GenreMapper;
 import com.dream.team.library.mapper.LanguageMapper;
 import com.dream.team.library.repository.LanguageRepository;
 import com.dream.team.library.service.interf.LanguageService;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +53,24 @@ public class LanguageServiceImpl implements LanguageService {
         }
 
         return Optional.of(LanguageMapper.INSTANCE.toDTO(language.get()));
+    }
+
+    @Override
+    public List<LanguageDto> findAllByName(String name) {
+        log.info("Returned all language by name");
+
+        if (name == null || name.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Language> languageList = languageRepository.findAllByName(name);
+
+        log.debug("Size of languages: " + languageList.size());
+
+
+        return languageList.stream()
+                .map(LanguageMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

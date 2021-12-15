@@ -1,14 +1,18 @@
 package com.dream.team.library.service.impl;
 
 import com.dream.team.library.dto.GenreDto;
+import com.dream.team.library.entity.lib.Book;
 import com.dream.team.library.entity.lib.Genre;
+import com.dream.team.library.mapper.BookMapper;
 import com.dream.team.library.mapper.GenreMapper;
 import com.dream.team.library.repository.GenreRepository;
 import com.dream.team.library.service.interf.GenreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +54,24 @@ public class GenreServiceImpl implements GenreService {
         }
 
         return Optional.of(GenreMapper.INSTANCE.toDTO(genre.get()));
+    }
+
+    @Override
+    public List<GenreDto> findAllByName(String name) {
+        log.info("Returned all genre by name");
+
+        if (name == null || name.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Genre> genreList = genreRepository.findAllByName(name);
+
+        log.debug("Size of genres: " + genreList.size());
+
+
+        return genreList.stream()
+                .map(GenreMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

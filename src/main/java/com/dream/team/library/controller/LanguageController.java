@@ -1,6 +1,8 @@
 package com.dream.team.library.controller;
 
+import com.dream.team.library.dto.GenreDto;
 import com.dream.team.library.dto.LanguageDto;
+import com.dream.team.library.entity.lib.Language;
 import com.dream.team.library.payload.LanguageApiString;
 import com.dream.team.library.service.interf.LanguageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +33,15 @@ public class LanguageController {
     private LanguageService languageService;
     private LanguageApiString languageApiString;
 
+    @Qualifier("AbstractBookDataControllerForLanguage")
+    @Autowired
+    public void setController(AbstractController<LanguageDto> controller) {
+        this.controller = controller;
+    }
+
     @Autowired
     public void setLanguageService(LanguageService languageService) {
         this.languageService = languageService;
-        this.controller = new AbstractController<>(languageService);
     }
 
     @Autowired
@@ -95,6 +103,34 @@ public class LanguageController {
         log.info("API was called: {}", languageApiString.getLanguageApiGetAll());
 
         return controller.getAll();
+    }
+
+    @Operation(summary = "Get language by name", tags = "language")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the language",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = LanguageDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${genre.api.getAllByName}")
+    public ResponseEntity<List<LanguageDto>> getAllByName(@PathVariable String name) {
+        log.info("API was called: {}", languageApiString.getLanguageApiGetAllByName());
+
+        return ((AbstractBookDataController<LanguageDto>) controller).getAllByName(name);
     }
 
     @Operation(summary = "Saving the language", tags = "language")

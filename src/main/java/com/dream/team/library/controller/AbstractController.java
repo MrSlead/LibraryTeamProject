@@ -3,7 +3,6 @@ package com.dream.team.library.controller;
 import com.dream.team.library.service.interf.AbstractService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +11,10 @@ public class AbstractController<T> {
 
     public AbstractController(AbstractService<T, Long> service) {
         this.service = service;
+    }
+
+    public AbstractService<T, Long> getService() {
+        return service;
     }
 
     public ResponseEntity<Optional<T>> getObjectById(Long objectId) {

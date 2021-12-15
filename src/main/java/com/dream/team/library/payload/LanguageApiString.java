@@ -15,6 +15,9 @@ public class LanguageApiString {
     @Value("${language.api.getAll}")
     private String languageApiGetAll;
 
+    @Value("${language.api.getAllByName}")
+    private String languageApiGetAllByName;
+
     @Value("${language.api.save}")
     private String languageApiSave;
 
@@ -33,26 +36,30 @@ public class LanguageApiString {
     }
 
     public String getLanguageApiGetById() {
-        return languageApiBegin + languageApiGetById;
+        return getLanguageApiBegin() + languageApiGetById;
     }
 
     public String getLanguageApiGetAll() {
-        return languageApiBegin + languageApiGetAll;
+        return getLanguageApiBegin() + languageApiGetAll;
+    }
+
+    public String getLanguageApiGetAllByName() {
+        return getLanguageApiBegin() + languageApiGetAllByName;
     }
 
     public String getLanguageApiSave() {
-        return languageApiBegin + languageApiSave;
+        return getLanguageApiBegin() + languageApiSave;
     }
 
     public String getLanguageApiUpdate() {
-        return languageApiBegin + languageApiUpdate;
+        return getLanguageApiBegin() + languageApiUpdate;
     }
 
     public String getLanguageApiDelete() {
-        return languageApiBegin + languageApiDelete;
+        return getLanguageApiBegin() + languageApiDelete;
     }
 
     public String getLanguageApiDeleteById() {
-        return languageApiBegin + languageApiDeleteById;
+        return getLanguageApiBegin() + languageApiDeleteById;
     }
 }

@@ -12,10 +12,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +33,15 @@ public class BookController {
     private BookService bookService;
     private BookApiString bookApiString;
 
+    @Qualifier("AbstractBookDataControllerForBook")
+    @Autowired
+    public void setController(AbstractController<BookDto> controller) {
+        this.controller = controller;
+    }
+
     @Autowired
     public void setBookService(BookService bookService) {
         this.bookService = bookService;
-        this.controller = new AbstractController<>(bookService);
     }
 
     @Autowired
@@ -69,7 +77,7 @@ public class BookController {
     })
     @GetMapping("${book.api.getById}")
     public ResponseEntity<Optional<BookDto>> getBookById(@PathVariable Long bookId) {
-        log.info("API was called: {}", bookApiString.getBookApiUpdate());
+        log.info("API was called: {}", bookApiString.getBookApiGetById());
 
         return controller.getObjectById(bookId);
     }
@@ -96,6 +104,203 @@ public class BookController {
 
         return controller.getAll();
     }
+
+    @Operation(summary = "Gets all books by name", tags = "book")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the books by name",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${book.api.getAllByName}")
+    public ResponseEntity<List<BookDto>> getAllByName(@PathVariable String name) {
+        log.info("API was called: {}", bookApiString.getBookApiGetAllByName());
+
+        return ((AbstractBookDataController<BookDto>) controller).getAllByName(name);
+    }
+
+    @Operation(summary = "Gets all books by language", tags = "book")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the books by name",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${book.api.getAllByLanguage}")
+    public ResponseEntity<List<BookDto>> getAllByLanguage(@PathVariable String language) {
+        log.info("API was called: {}", bookApiString.getBookApiGetAllByLanguage());
+
+        List<BookDto> bookList = bookService.findAllByLanguage(language);
+        if (bookList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Gets all books by number of pages", tags = "book")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the books by name",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${book.api.getAllByNumberOfPages}")
+    public ResponseEntity<List<BookDto>> getAllByNumberOfPages(@PathVariable Long numberOfPages) {
+        log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPages());
+
+        List<BookDto> bookList = bookService.findAllByNumberOfPages(numberOfPages);
+        if (bookList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Gets all books by number of pages between start number and end number", tags = "book")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the books by name",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${book.api.getAllByNumberOfPagesBetween}")
+    public ResponseEntity<List<BookDto>> getAllByNumberOfPagesBetween(@RequestParam Long startNumber,
+                                                                      @RequestParam Long endNumber)
+    {
+        log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPagesBetween());
+
+        List<BookDto> bookList = bookService.findAllByNumberOfPagesBetween(startNumber, endNumber);
+        if (bookList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Gets all books by date of publication", tags = "book")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the books by name",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${book.api.getAllByDateOfPublication}")
+    public ResponseEntity<List<BookDto>> getAllByDateOfPublication(@PathVariable Date date) {
+        log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPages());
+
+        List<BookDto> bookList = bookService.findAllByDateOfPublication(date);
+        if (bookList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Gets all books by date of publication between start date and end date", tags = "book")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the books by name",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The passed object is null, or is empty",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content
+            )
+    })
+    @GetMapping("${book.api.getAllByDateOfPublicationBetween}")
+    public ResponseEntity<List<BookDto>> getAllByDateOfPublicationBetween(@RequestParam Date startDate,
+                                                                          @RequestParam Date endDate) {
+        log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPagesBetween());
+
+        List<BookDto> bookList = bookService.findAllByDateOfPublicationBetween(startDate, endDate);
+        if (bookList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+
 
     @Operation(summary = "Saving the book", tags = "book")
     @ApiResponses(value = {
