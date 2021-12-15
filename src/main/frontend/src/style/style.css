@@ -23,6 +23,12 @@ section {
   margin: 0 auto;
 }
 
+.css-q3o1l2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
 .header__wrapper__menu {
   padding-top: 47px;
   display: -webkit-box;
