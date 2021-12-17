@@ -1,5 +1,6 @@
 package com.dream.team.library.controller;
 
+import com.dream.team.library.controller.api.ApiResult;
 import com.dream.team.library.entity.authorization.Client;
 import com.dream.team.library.entity.authorization.converter.Role;
 import com.dream.team.library.payload.ClientApiString;
@@ -34,7 +35,7 @@ public class ClientController {
     }
 
     @GetMapping("${client.api.getById}")
-    public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long clientId) {
+    public ApiResult<Optional<Client>> getClientById(@PathVariable Long clientId) {
         log.info("API was called: " + clientApiString.getClientApiGetById());
 
         return controller.getObjectById(clientId);
@@ -58,7 +59,7 @@ public class ClientController {
     }
 
     @GetMapping("${client.api.getAll}")
-    public ResponseEntity<List<Client>> findAll() {
+    public ApiResult<List<Client>> findAll() {
         log.info("API was called: " + clientApiString.getClientApiGetAll());
 
         return controller.getAll();
