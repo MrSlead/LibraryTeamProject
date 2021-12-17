@@ -63,7 +63,8 @@ public class AbstractBookDataControllerConfig {
         return new AbstractBookDataController<>(languageService());
     }
 
-    private LanguageService languageService() {
+    @Bean
+    public LanguageService languageService() {
         return new LanguageServiceImpl();
     }
 }

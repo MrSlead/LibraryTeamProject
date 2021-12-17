@@ -1,12 +1,14 @@
 package com.dream.team.library.controller;
 
+import com.dream.team.library.controller.api.ApiResult;
+import com.dream.team.library.controller.api.ApiResultError;
+import com.dream.team.library.controller.helper.ExampleObjectHelper;
 import com.dream.team.library.dto.BookDto;
 import com.dream.team.library.payload.BookApiString;
 import com.dream.team.library.service.interf.BookService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -53,21 +54,23 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the book by id",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BookDto.class)
-                    )
+                    description = "Found the book by id"
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Parameter bookId is null",
-                    content = @Content
+                    description = "The passed parameter is null",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetById.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "The book by id not found",
-                    content = @Content
+                    description = "The object by id not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetById.CODE_404)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -75,8 +78,8 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getById}")
-    public ResponseEntity<Optional<BookDto>> getBookById(@PathVariable Long bookId) {
+    @GetMapping(value = "${book.api.getById}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<Optional<BookDto>> getBookById(@PathVariable Long bookId) {
         log.info("API was called: {}", bookApiString.getBookApiGetById());
 
         return controller.getObjectById(bookId);
@@ -86,11 +89,7 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books"
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -98,8 +97,8 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAll}")
-    public ResponseEntity<List<BookDto>> getAll() {
+    @GetMapping(value = "${book.api.getAll}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAll() {
         log.info("API was called: {}", bookApiString.getBookApiGetAll());
 
         return controller.getAll();
@@ -109,16 +108,15 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books by name",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books by name"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -126,8 +124,8 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAllByName}")
-    public ResponseEntity<List<BookDto>> getAllByName(@PathVariable String name) {
+    @GetMapping(value = "${book.api.getAllByName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAllByName(@PathVariable String name) {
         log.info("API was called: {}", bookApiString.getBookApiGetAllByName());
 
         return ((AbstractBookDataController<BookDto>) controller).getAllByName(name);
@@ -137,16 +135,15 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books by name",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books by name"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -154,32 +151,31 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAllByLanguage}")
-    public ResponseEntity<List<BookDto>> getAllByLanguage(@PathVariable String language) {
+    @GetMapping(value = "${book.api.getAllByLanguage}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAllByLanguage(@PathVariable String language) {
         log.info("API was called: {}", bookApiString.getBookApiGetAllByLanguage());
 
         List<BookDto> bookList = bookService.findAllByLanguage(language);
         if (bookList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed object is null, or is empty"));
         }
 
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
+        return ApiResult.success(bookList);
     }
 
     @Operation(summary = "Gets all books by number of pages", tags = "book")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books by name",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books by name"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -187,32 +183,31 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAllByNumberOfPages}")
-    public ResponseEntity<List<BookDto>> getAllByNumberOfPages(@PathVariable Long numberOfPages) {
+    @GetMapping(value = "${book.api.getAllByNumberOfPages}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAllByNumberOfPages(@PathVariable Long numberOfPages) {
         log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPages());
 
         List<BookDto> bookList = bookService.findAllByNumberOfPages(numberOfPages);
         if (bookList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed object is null, or is empty"));
         }
 
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
+        return ApiResult.success(bookList);
     }
 
     @Operation(summary = "Gets all books by number of pages between start number and end number", tags = "book")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books by name",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books by name"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -220,34 +215,33 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAllByNumberOfPagesBetween}")
-    public ResponseEntity<List<BookDto>> getAllByNumberOfPagesBetween(@RequestParam Long startNumber,
+    @GetMapping(value = "${book.api.getAllByNumberOfPagesBetween}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAllByNumberOfPagesBetween(@RequestParam Long startNumber,
                                                                       @RequestParam Long endNumber)
     {
         log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPagesBetween());
 
         List<BookDto> bookList = bookService.findAllByNumberOfPagesBetween(startNumber, endNumber);
         if (bookList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed object is null, or is empty"));
         }
 
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
+        return ApiResult.success(bookList);
     }
 
     @Operation(summary = "Gets all books by date of publication", tags = "book")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books by name",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books by name"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -255,32 +249,31 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAllByDateOfPublication}")
-    public ResponseEntity<List<BookDto>> getAllByDateOfPublication(@PathVariable Date date) {
+    @GetMapping(value = "${book.api.getAllByDateOfPublication}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAllByDateOfPublication(@PathVariable Date date) {
         log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPages());
 
         List<BookDto> bookList = bookService.findAllByDateOfPublication(date);
         if (bookList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed object is null, or is empty"));
         }
 
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
+        return ApiResult.success(bookList);
     }
 
     @Operation(summary = "Gets all books by date of publication between start date and end date", tags = "book")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the books by name",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
-                    )
+                    description = "Found the books by name"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -288,34 +281,33 @@ public class BookController {
                     content = @Content
             )
     })
-    @GetMapping("${book.api.getAllByDateOfPublicationBetween}")
-    public ResponseEntity<List<BookDto>> getAllByDateOfPublicationBetween(@RequestParam Date startDate,
+    @GetMapping(value = "${book.api.getAllByDateOfPublicationBetween}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<BookDto>> getAllByDateOfPublicationBetween(@RequestParam Date startDate,
                                                                           @RequestParam Date endDate) {
         log.info("API was called: {}", bookApiString.getBookApiGetAllByNumberOfPagesBetween());
 
         List<BookDto> bookList = bookService.findAllByDateOfPublicationBetween(startDate, endDate);
         if (bookList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed object is null, or is empty"));
         }
 
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
+        return ApiResult.success(bookList);
     }
 
 
     @Operation(summary = "Saving the book", tags = "book")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
-                    description = "Saved the book",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BookDto.class)
-                    )
+                    responseCode = "200",
+                    description = "Saved the book"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or it has id",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.Save.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -324,7 +316,7 @@ public class BookController {
             )
     })
     @PostMapping(value = "${book.api.save}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookDto> save(@RequestBody BookDto bookDto) {
+    public ApiResult<BookDto> save(@RequestBody BookDto bookDto) {
         log.info("API was called: {}", bookApiString.getBookApiSave());
 
         return controller.save(bookDto);
@@ -334,16 +326,15 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Updated the book",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BookDto.class)
-                    )
+                    description = "Updated the book"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or it has no id, or it not contained in the database",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.Update.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -352,7 +343,7 @@ public class BookController {
             )
     })
     @PutMapping(value = "${book.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookDto> update(@RequestBody BookDto bookDto) {
+    public ApiResult<BookDto> update(@RequestBody BookDto bookDto) {
         log.info("API was called: {}", bookApiString.getBookApiSave());
 
         return controller.update(bookDto);

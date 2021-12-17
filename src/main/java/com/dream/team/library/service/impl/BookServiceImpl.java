@@ -106,7 +106,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findAllByNumberOfPagesBetween(Long startNumber, Long endNumber) {
         log.info("Returned all books by number of pages between start number and end number");
 
-        if (startNumber == null || endNumber == null || startNumber <= 0 || endNumber <= 0) {
+        if (startNumber == null || endNumber == null || startNumber <= 0 || endNumber <= 0 || endNumber < startNumber) {
             return Collections.emptyList();
         }
 
@@ -140,7 +140,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findAllByDateOfPublicationBetween(Date startDate, Date endDate) {
         log.info("Returned all books by number of pages between start date and end date");
 
-        if (startDate == null || endDate == null) {
+        if (startDate == null || endDate == null || startDate.getTime() - endDate.getTime() > 0) {
             return Collections.emptyList();
         }
 

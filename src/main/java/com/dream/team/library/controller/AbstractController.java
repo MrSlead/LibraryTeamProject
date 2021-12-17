@@ -1,8 +1,9 @@
 package com.dream.team.library.controller;
 
+import com.dream.team.library.controller.api.ApiResult;
+import com.dream.team.library.controller.api.ApiResultError;
 import com.dream.team.library.service.interf.AbstractService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,44 +18,45 @@ public class AbstractController<T> {
         return service;
     }
 
-    public ResponseEntity<Optional<T>> getObjectById(Long objectId) {
+    public ApiResult<Optional<T>> getObjectById(Long objectId) {
         if (objectId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed parameter is null"));
         }
 
         Optional<T> t = service.findById(objectId);
 
         if (t.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ApiResult.error(new ApiResultError(HttpStatus.NOT_FOUND.value(), "The object by id not found"));
         }
 
-        return new ResponseEntity<>(t, HttpStatus.OK);
+        return ApiResult.success(t);
     }
 
-    public ResponseEntity<List<T>> getAll() {
+    public ApiResult<List<T>> getAll() {
         List<T> t = service.findAll();
 
-        return new ResponseEntity<>(t, HttpStatus.OK);
+        return ApiResult.success(t);
     }
 
-    public ResponseEntity<T> save(T t) {
+    public ApiResult<T> save(T t) {
         Optional<T> obj = service.save(t);
 
         if (obj.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(), "The passed object is null, or it has id"));
         }
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ApiResult.success(obj.get());
     }
 
-    public ResponseEntity<T> update(T t) {
+    public ApiResult<T> update(T t) {
         Optional<T> obj = service.update(t);
 
         if (obj.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResult.error(new ApiResultError(HttpStatus.BAD_REQUEST.value(),
+                    "The passed object is null, or it has no id, or it not contained in the database"));
         }
 
-        return new ResponseEntity<>(obj.get(), HttpStatus.OK);
+        return ApiResult.success(t);
     }
 
     public void delete(T t) {

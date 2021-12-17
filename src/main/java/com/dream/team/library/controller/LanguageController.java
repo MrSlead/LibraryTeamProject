@@ -1,14 +1,13 @@
 package com.dream.team.library.controller;
 
-import com.dream.team.library.dto.GenreDto;
+import com.dream.team.library.controller.api.ApiResult;
+import com.dream.team.library.controller.helper.ExampleObjectHelper;
 import com.dream.team.library.dto.LanguageDto;
-import com.dream.team.library.entity.lib.Language;
 import com.dream.team.library.payload.LanguageApiString;
 import com.dream.team.library.service.interf.LanguageService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,29 +43,31 @@ public class LanguageController {
     }
 
     @Autowired
-    public void setGenreApiString(LanguageApiString genreApiString) {
-        this.languageApiString = genreApiString;
+    public void setGenreApiString(LanguageApiString languageApiString) {
+        this.languageApiString = languageApiString;
     }
 
     @Operation(summary = "Get language by id", tags = "language")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the language by id",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = LanguageDto.class)
-                    )
+                    description = "Found the language by id"
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Parameter languageId is null",
-                    content = @Content
+                    description = "The passed parameter is null",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetById.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "The language by id not found",
-                    content = @Content
+                    description = "The object by id not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetById.CODE_404)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -75,8 +75,8 @@ public class LanguageController {
                     content = @Content
             )
     })
-    @GetMapping("${language.api.getById}")
-    public ResponseEntity<Optional<LanguageDto>> getLanguageById(@PathVariable Long languageId) {
+    @GetMapping(value = "${language.api.getById}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<Optional<LanguageDto>> getLanguageById(@PathVariable Long languageId) {
         log.info("API was called: {}", languageApiString.getLanguageApiGetById());
 
         return controller.getObjectById(languageId);
@@ -86,11 +86,7 @@ public class LanguageController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the languages",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = LanguageDto.class))
-                    )
+                    description = "Found the languages"
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -98,8 +94,8 @@ public class LanguageController {
                     content = @Content
             )
     })
-    @GetMapping("${language.api.getAll}")
-    public ResponseEntity<List<LanguageDto>> getAll() {
+    @GetMapping(value = "${language.api.getAll}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<LanguageDto>> getAll() {
         log.info("API was called: {}", languageApiString.getLanguageApiGetAll());
 
         return controller.getAll();
@@ -109,16 +105,15 @@ public class LanguageController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the language",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = LanguageDto.class))
-                    )
+                    description = "Found the language"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -126,8 +121,8 @@ public class LanguageController {
                     content = @Content
             )
     })
-    @GetMapping("${genre.api.getAllByName}")
-    public ResponseEntity<List<LanguageDto>> getAllByName(@PathVariable String name) {
+    @GetMapping(value = "${genre.api.getAllByName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<LanguageDto>> getAllByName(@PathVariable String name) {
         log.info("API was called: {}", languageApiString.getLanguageApiGetAllByName());
 
         return ((AbstractBookDataController<LanguageDto>) controller).getAllByName(name);
@@ -136,17 +131,16 @@ public class LanguageController {
     @Operation(summary = "Saving the language", tags = "language")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
-                    description = "Saved the language",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = LanguageDto.class)
-                    )
+                    responseCode = "200",
+                    description = "Saved the language"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or it has id",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.Save.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -155,7 +149,7 @@ public class LanguageController {
             )
     })
     @PostMapping(value = "${language.api.save}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LanguageDto> save(@RequestBody LanguageDto languageDto) {
+    public ApiResult<LanguageDto> save(@RequestBody LanguageDto languageDto) {
         log.info("API was called: {}", languageApiString.getLanguageApiSave());
 
         return controller.save(languageDto);
@@ -165,16 +159,15 @@ public class LanguageController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Updated the language",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = LanguageDto.class)
-                    )
+                    description = "Updated the language"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or it has no id, or it not contained in the database",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.Update.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -183,7 +176,7 @@ public class LanguageController {
             )
     })
     @PutMapping(value = "${language.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LanguageDto> update(@RequestBody LanguageDto languageDto) {
+    public ApiResult<LanguageDto> update(@RequestBody LanguageDto languageDto) {
         log.info("API was called: {}", languageApiString.getLanguageApiUpdate());
 
         return controller.update(languageDto);

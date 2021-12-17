@@ -1,14 +1,13 @@
 package com.dream.team.library.controller;
 
-import com.dream.team.library.dto.BookDto;
+import com.dream.team.library.controller.api.ApiResult;
+import com.dream.team.library.controller.helper.ExampleObjectHelper;
 import com.dream.team.library.dto.GenreDto;
-import com.dream.team.library.dto.LanguageDto;
 import com.dream.team.library.payload.GenreApiString;
 import com.dream.team.library.service.interf.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,21 +51,23 @@ public class GenreController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the genre by id",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = GenreDto.class)
-                    )
+                    description = "Found the genre by id"
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Parameter genreId is null",
-                    content = @Content
+                    description = "The passed parameter is null",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetById.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "The genre by id not found",
-                    content = @Content
+                    description = "The object by id not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetById.CODE_404)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -75,8 +75,8 @@ public class GenreController {
                     content = @Content
             )
     })
-    @GetMapping("${genre.api.getById}")
-    public ResponseEntity<Optional<GenreDto>> getGenreById(@PathVariable Long genreId) {
+    @GetMapping(value = "${genre.api.getById}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<Optional<GenreDto>> getGenreById(@PathVariable Long genreId) {
         log.info("API was called: {}", genreApiString.getGenreApiGetById());
 
         return controller.getObjectById(genreId);
@@ -86,11 +86,7 @@ public class GenreController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the genres",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = GenreDto.class))
-                    )
+                    description = "Found the genres"
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -98,8 +94,8 @@ public class GenreController {
                     content = @Content
             )
     })
-    @GetMapping("${genre.api.getAll}")
-    public ResponseEntity<List<GenreDto>> getAll() {
+    @GetMapping(value = "${genre.api.getAll}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<GenreDto>> getAll() {
         log.info("API was called: {}", genreApiString.getGenreApiGetAll());
 
         return controller.getAll();
@@ -109,16 +105,15 @@ public class GenreController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Found the genres",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = GenreDto.class))
-                    )
+                    description = "Found the genres"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or is empty",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.GetAllBy.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -126,8 +121,8 @@ public class GenreController {
                     content = @Content
             )
     })
-    @GetMapping("${genre.api.getAllByName}")
-    public ResponseEntity<List<GenreDto>> getAllByName(@PathVariable String name) {
+    @GetMapping(value = "${genre.api.getAllByName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResult<List<GenreDto>> getAllByName(@PathVariable String name) {
         log.info("API was called: {}", genreApiString.getGenreApiGetAllByName());
 
         return ((AbstractBookDataController<GenreDto>) controller).getAllByName(name);
@@ -136,17 +131,16 @@ public class GenreController {
     @Operation(summary = "Saving the genre", tags = "genre")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
-                    description = "Saved the genre",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = GenreDto.class)
-                    )
+                    responseCode = "200",
+                    description = "Saved the genre"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or it has id",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.Save.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -155,7 +149,7 @@ public class GenreController {
             )
     })
     @PostMapping(value = "${genre.api.save}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenreDto> save(@RequestBody GenreDto genreDto) {
+    public ApiResult<GenreDto> save(@RequestBody GenreDto genreDto) {
         log.info("API was called: {}", genreApiString.getGenreApiSave());
 
         return controller.save(genreDto);
@@ -165,16 +159,15 @@ public class GenreController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Updated the genre",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = GenreDto.class)
-                    )
+                    description = "Updated the genre"
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "The passed object is null, or it has no id, or it not contained in the database",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {@ExampleObject(value = ExampleObjectHelper.Update.CODE_400)}
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -183,7 +176,7 @@ public class GenreController {
             )
     })
     @PutMapping(value = "${genre.api.update}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GenreDto> update(@RequestBody GenreDto genreDto) {
+    public ApiResult<GenreDto> update(@RequestBody GenreDto genreDto) {
         log.info("API was called: {}", genreApiString.getGenreApiUpdate());
 
         return controller.update(genreDto);
